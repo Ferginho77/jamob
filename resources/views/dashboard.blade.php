@@ -83,25 +83,16 @@
                                 <th scope="col">Status</th>
                             </tr>
                         </thead>
-                        
                         <tbody>
-                        @foreach ($peminjamans as $x)
-
-    
-                            <tr>
-                               <td>{{ $x->id_mobil }}</td>
-                               <td>{{ $x->plat_nomor }}</td>
-                               <td>{{ $x->username }}</td>
-                            </tr>
-                            <tr>
-                                <!-- Data rows can be added here -->
-                            </tr>
-                            <tr>
-                                <!-- Data rows can be added here -->
-                            </tr>
+                            @foreach ($peminjamans as $x)
+                                <tr>
+                                    <td>{{ $x->mobil->nama_mobil ?? 'N/A' }}</td> <!-- Displaying mobil name -->
+                                    <td>{{ $x->mobil->plat_nomor ?? 'N/A' }}</td> <!-- Displaying plat nomor -->
+                                    <td>{{ $x->user->username ?? 'N/A' }}</td> <!-- Displaying user name -->
+                                    <td>{{ $x->status }}</td> 
+                                </tr>
                             @endforeach
-                        </tbody>
-                       
+                        </tbody>           
                     </table>
                 </div>
             </div>
