@@ -25,6 +25,8 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Route untuk dashboard admin
 Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard')->middleware('auth'); // Hanya satu rute untuk dashboard
+Route::get('/peminjaman', [HomeController::class, 'peminjaman'])->name('peminjaman')->middleware('auth'); 
+Route::get('/permintaan', [HomeController::class, 'permintaan'])->name('permintaan')->middleware('auth'); 
 
 // Route untuk mobil
 Route::get('/mobil', [HomeController::class, 'mobil'])->middleware('auth')->name('mobil');

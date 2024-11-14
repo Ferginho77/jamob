@@ -50,7 +50,7 @@ class MobilController extends Controller
     public function hitung()
     {
         // Menggunakan query builder Laravel untuk menghitung jumlah data
-        $totalMobil = DB::table('mobil')->count(); 
+        $totalMobil = DB::table('mobil')->where('status', 'Ada')->count();
         $totalPeminjam = DB::table('peminjaman')->count(); 
         
         // Mengirimkan data ke view

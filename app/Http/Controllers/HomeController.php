@@ -24,15 +24,16 @@ class HomeController extends Controller
         
         return view('dashboard', [
             'peminjamans' => $peminjamans,
-            'totalMobil' => Mobil::count(),
+            'totalMobil' => Mobil::where('status', 'Ada')->count(),
             'totalPeminjam' => $peminjamans->count(),
         ]);
     }
     
 
-    public function pemeliharaan()
+    public function peminjaman()
     {
-        return view('pemeliharaan'); 
+        $data['mobils'] = Mobil::with('user')->get(); // Mengambil mobil beserta user
+        return view('peminjaman', $data); 
     }
 
     public function index()
@@ -48,5 +49,9 @@ class HomeController extends Controller
     {
         $data['mobils'] = Mobil::with('user')->get(); // Mengambil mobil beserta user
         return view('mobil', $data); 
+    }
+
+    public function permintaan(){
+        return view('permintaan');
     }
 }

@@ -26,7 +26,7 @@
         <nav class="navbar navbar-expand-lg bg-primary">
         <div class="container-fluid">
             <a href="/">
-                <img src="/img/tirta.png" alt="icon" style="max-width:50px;" class="ms-5">
+                <img src="/img/logo-perumda-tr.png" alt="icon" style="max-width:100px;" class="ms-5">
             </a>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav ms-auto">
