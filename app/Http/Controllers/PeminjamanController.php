@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\DB;
 
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
+use App\Models\Mobil;
 
 class PeminjamanController extends Controller
 {
@@ -32,31 +33,99 @@ class PeminjamanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-           // Validasi input
-        $request->validate([
-            'user_id' => 'required|integer',
-            'mobil_id' => 'required|integer',
-            'tanggal_peminjaman' => 'required|date',
-            'tanggal_pengembalian' => 'required|date|after_or_equal:tanggal_peminjaman',
-            'tujuan' => 'required|string|max:255', // Ubah validasi untuk kolom 'tujuan'
-        ]);
-
-        // Simpan data ke database
-        Peminjaman::create($request->all());
-
-        // Redirect dengan pesan sukses
-        return redirect()->back()->with('success', 'Peminjaman berhasil ditambahkan.');
-    }
-    // public function tampilkanJumlahData()
-    // {
-    //     // Menggunakan query builder Laravel langsung untuk menghitung data
-    //     $totalData = DB::table('peminjaman')->count(); // Ganti 'peminjaman' dengan nama tabel yang benar
+    public function create(Request $request)
+{
+    // Misalkan `mobil_id` dikirim sebagai parameter query (?mobil_id=1)
+    $mobil_id = $request->query('mobil_id');
     
-    //     // Mengirimkan data ke view
-    //     return view('dashboard', ['totalData' => $totalData]);
-    // }
+    // Ambil data peminjaman terakhir dari user yang login dan mobil tertentu
+    $peminjaman = Peminjaman::where('user_id', Auth::id())
+                            ->where('mobil_id', $mobil_id)
+                            ->orderBy('created_at', 'desc')
+                            ->first();
+                            
+    return view('peminjaman.create', compact('peminjaman'));
+}
+
+public function store(Request $request)
+{
+    // Validasi input jika diperlukan
+    $request->validate([
+        'mobil_id' => 'required|integer',
+    ]);
+
+    // Cari data peminjaman berdasarkan user_id dan mobil_id
+    $peminjaman = Peminjaman::where('user_id', Auth::id())
+                            ->where('mobil_id', $request->input('mobil_id'))
+                            ->first();
+
+    if ($peminjaman) {
+        // Hapus data peminjaman
+        $peminjaman->delete();
+
+        // Perbarui status mobil menjadi "Ada"
+        $mobil = Mobil::find($request->input('mobil_id'));
+        if ($mobil) {
+            $mobil->status = 'Ada';
+            $mobil->save();
+        }
+    }
+
+    // Redirect atau kembalikan respon sesuai kebutuhan
+    return redirect()->route('peminjaman.index')->with('success', 'Mobil berhasil dikembalikan dan status diperbarui.');
+}
+
+public function returnMobil(Request $request)
+{
+    // Validasi input jika diperlukan
+    $request->validate([
+        'mobil_id' => 'required|integer',
+        'kondisiMobil' => 'nullable|image', // Validasi untuk file gambar kondisi mobil
+        'kondisiBensin' => 'nullable|image', // Validasi untuk file gambar kondisi bensin
+        'deskripsiKondisi' => 'nullable|string',
+    ]);
+
+    // Cari data peminjaman berdasarkan user_id dan mobil_id
+    $peminjaman = Peminjaman::where('user_id', Auth::id())
+                            ->where('mobil_id', $request->input('mobil_id'))
+                            ->first();
+
+    if ($peminjaman) {
+        // Hapus data peminjaman
+        $peminjaman->delete();
+
+        // Perbarui status mobil menjadi "Ada"
+        $mobil = Mobil::find($request->input('mobil_id'));
+        if ($mobil) {
+            $mobil->status = 'Ada';
+            $mobil->save();
+        }
+
+        // Menangani upload gambar jika ada
+        if ($request->hasFile('kondisiMobil')) {
+            $file = $request->file('kondisiMobil');
+            // Simpan gambar dan lakukan tindakan sesuai kebutuhan
+        }
+
+        if ($request->hasFile('kondisiBensin')) {
+            $file = $request->file('kondisiBensin');
+            // Simpan gambar dan lakukan tindakan sesuai kebutuhan
+        }
+    }
+
+    // Redirect atau kembalikan respon sesuai kebutuhan
+    return redirect()->route('peminjaman.index')->with('success', 'Mobil berhasil dikembalikan dan status diperbarui.');
+}
+
+   public function pinjam(){
+    $peminjamans = Peminjaman::with(['mobil', 'user'])->get(); // Include user data in the query
+        
+    return view('home', [
+        'peminjamans' => $peminjamans,
+        'totalMobil' => Mobil::where('status', 'Dipinjam')->count(),
+        'totalPeminjam' => $peminjamans->count(),
+    ]);
+   }
     
     /**
      * Display the specified resource.

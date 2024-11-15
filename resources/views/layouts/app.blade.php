@@ -23,7 +23,7 @@
                     </div>
                 </div>
         </nav> -->
-        <nav class="navbar navbar-expand-lg bg-primary">
+        <nav class="navbar navbar-expand-lg bg-secondary-subtle">
         <div class="container-fluid">
             <a href="/">
                 <img src="/img/logo-perumda-tr.png" alt="icon" style="max-width:100px;" class="ms-5">
@@ -32,7 +32,7 @@
                 <div class="navbar-nav ms-auto">
                     @if(Auth::check())
                         <!-- Jika user login, tampilkan nama user dan tombol logout -->
-                        <span class="nav-link text-light">{{ Auth::user()->username }}</span>
+                        <span class="nav-link text-dark">{{ Auth::user()->username }}</span>
                         <form action="{{ route('logout') }}" method="POST" class="d-inline">
                             @csrf
                             <button type="submit" class="nav-link btn btn-link text-light bg-danger" style="text-decoration: none;">Logout</button>
@@ -52,9 +52,9 @@
         @yield('content')
     </main>
 
-    <footer class="text-center relative-bottom">
+    <footer class="text-center fixed-bottom">
         <div class="container p-4"></div>
-        <div class="text-center p-3 bg-primary">
+        <div class="text-center p-3 bg-secondary">
             © 2024
         </div>
     </footer>

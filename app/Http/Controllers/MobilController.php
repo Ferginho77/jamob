@@ -20,7 +20,7 @@ class MobilController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function user()
+    public function tambah()
     {
         //
     }

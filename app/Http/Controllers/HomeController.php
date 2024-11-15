@@ -14,6 +14,7 @@ class HomeController extends Controller
     {
         // Mengambil data mobil yang statusnya 'ada' dan data lainnya
         $data['mobils'] = Mobil::with('user')->get(); // Mengambil mobil beserta user
+        $data['peminjamans'] = Peminjaman::with('user')->get(); // Mengambil mobil beserta user
         $data['wilayah'] = Wilayah::orderBy('kantor_wilayah', 'asc')->get();
         return view('home', $data);
     }
