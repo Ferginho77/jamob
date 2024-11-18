@@ -11,7 +11,7 @@ class PengembalianController extends Controller
 {
     public function store(Request $request)
     {
-        
+
         // Log data yang diterima
         // Log::info('Data yang diterima di store:', $request->all());
         // dd($request->all());
@@ -27,11 +27,11 @@ class PengembalianController extends Controller
         ]);
 
         // Menyimpan file jika diupload
-        $kondisiMobilPath = $request->hasFile('kondisiMobil') 
-            ? $request->file('kondisiMobil')->store('kondisi_mobil') 
+        $kondisiMobilPath = $request->hasFile('kondisiMobil')
+            ? $request->file('kondisiMobil')->store('kondisi_mobil')
             : null;
-        $kondisiBensinPath = $request->hasFile('kondisiBensin') 
-            ? $request->file('kondisiBensin')->store('kondisi_bensin') 
+        $kondisiBensinPath = $request->hasFile('kondisiBensin')
+            ? $request->file('kondisiBensin')->store('kondisi_bensin')
             : null;
 
         // Simpan data ke database
@@ -48,6 +48,13 @@ class PengembalianController extends Controller
 
         // Redirect ke halaman home dengan pesan sukses
         return redirect()->route('home')->with('success', 'Mobil berhasil dikembalikan.');
-        
+
     }
+    public function index()
+{
+    $pengembalians = Pengembalian::all();
+
+    return view('home', compact('pengembalians'));
+}
+
 }

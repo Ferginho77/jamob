@@ -3,22 +3,18 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MobilController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\WilayahController; 
-use App\Http\Controllers\PeminjamanController; 
-use App\Http\Controllers\PengembalianController; 
+use App\Http\Controllers\WilayahController;
+use App\Http\Controllers\PeminjamanController;
+use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 
 // Route untuk halaman home
 Route::get('/', [HomeController::class, 'home']);
-Route::get('/home', [MobilController::class, 'index'])->name('home');
 
 // Rute untuk detail peminjaman
 Route::get('/peminjamans', [HomeController::class, 'detail'])->name('detail');
-Route::post('/pinjam-mobil', [HomeController::class, 'pinjamMobil'])->name('pinjamMobil');
-
-// Route untuk wilayah
-Route::get('/wilayah', [HomeController::class, 'index']);
+Route::get('/home', [PeminjamanController::class, 'pinjam'])->name('home')->middleware('auth');
 
 // USER
 Route::get('/users', [UserController::class, 'index'])->middleware('auth');
@@ -35,6 +31,7 @@ Route::get('/permintaan', [HomeController::class, 'permintaan'])->name('perminta
 
 // Route untuk pengembalian mobil
 Route::post('/pengembalian/store', [PengembalianController::class, 'store'])->name('pengembalian.store');
+Route::get('/home', [PengembalianController::class, 'index'])->name('home');
 
 // Route untuk daftar mobil
 Route::get('/mobil', [HomeController::class, 'mobil'])->middleware('auth')->name('mobil');
