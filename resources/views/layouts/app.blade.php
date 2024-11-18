@@ -39,7 +39,7 @@
                         </form>
                     @else
                         <!-- Jika user belum login, tampilkan tombol login -->
-                        <a class="nav-link active text-light" aria-current="page" href="/login">Login</a>
+                        <a class="nav-link active text-dark" aria-current="page" href="/login">Login</a>
                     @endif
                 </div>
             </div>
@@ -54,7 +54,7 @@
 
     <footer class="text-center fixed-bottom">
         <div class="container p-4"></div>
-        <div class="text-center p-3 bg-secondary">
+        <div class="text-center text-black p-3 bg-secondary">
             © 2024
         </div>
     </footer>

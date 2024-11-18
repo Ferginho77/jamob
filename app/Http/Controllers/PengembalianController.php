@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log; // Import Log
 use Illuminate\Http\Request;
 use App\Models\Pengembalian;
 
@@ -10,44 +11,43 @@ class PengembalianController extends Controller
 {
     public function store(Request $request)
     {
+        
+        // Log data yang diterima
+        // Log::info('Data yang diterima di store:', $request->all());
+        // dd($request->all());
         // Validasi data yang diterima
         $request->validate([
-            'mobil_id' => 'required|exists:mobil,id',
             'nama_mobil' => 'required|string|max:255',
             'plat_nomor' => 'required|string|max:255',
             'tanggal_pengembalian' => 'required|date',
             'kondisiMobil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'kondisiBensin' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'deskripsiKondisi' => 'nullable|string',
+            'mobil_id' => 'required|exists:mobil,id',
         ]);
 
         // Menyimpan file jika diupload
-        $kondisiMobilPath = null;
-        $kondisiBensinPath = null;
-
-        if ($request->hasFile('kondisiMobil')) {
-            $kondisiMobilPath = $request->file('kondisiMobil')->store('kondisi_mobil');
-        }
-
-        if ($request->hasFile('kondisiBensin')) {
-            $kondisiBensinPath = $request->file('kondisiBensin')->store('kondisi_bensin');
-        }
-
-        // Membuat objek baru dari model Pengembalian
-        $pengembalian = new Pengembalian();
-        $pengembalian->user_id = Auth::id(); // Menggunakan Auth untuk mendapatkan ID pengguna yang sedang login
-        $pengembalian->mobil_id = $request->mobil_id;
-        $pengembalian->nama_mobil = $request->nama_mobil;
-        $pengembalian->plat_nomor = $request->plat_nomor;
-        $pengembalian->tanggal_pengembalian = $request->tanggal_pengembalian; // Tambahkan ini
-        $pengembalian->kondisi_fisik = $kondisiMobilPath;
-        $pengembalian->bensin = $kondisiBensinPath;
-        $pengembalian->deskripsi = $request->deskripsiKondisi;
+        $kondisiMobilPath = $request->hasFile('kondisiMobil') 
+            ? $request->file('kondisiMobil')->store('kondisi_mobil') 
+            : null;
+        $kondisiBensinPath = $request->hasFile('kondisiBensin') 
+            ? $request->file('kondisiBensin')->store('kondisi_bensin') 
+            : null;
 
         // Simpan data ke database
-        $pengembalian->save();
+        Pengembalian::create([
+            'nama_mobil' => $request->nama_mobil,
+            'plat_nomor' => $request->plat_nomor,
+            'tanggal_pengembalian' => $request->tanggal_pengembalian,
+            'kondisi_fisik' => $kondisiMobilPath,
+            'bensin' => $kondisiBensinPath,
+            'deskripsi' => $request->deskripsiKondisi,
+            'mobil_id' => $request->mobil_id,
+            'user_id' => Auth::id(),
+        ]);
 
-        // Redirect atau memberikan respon
-        return redirect()->back()->with('success', 'Mobil berhasil dikembalikan.');
+        // Redirect ke halaman home dengan pesan sukses
+        return redirect()->route('home')->with('success', 'Mobil berhasil dikembalikan.');
+        
     }
 }

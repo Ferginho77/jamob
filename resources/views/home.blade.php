@@ -11,15 +11,17 @@
     </div>
 
     @foreach ($peminjamans as $peminjaman)
-    <button type="button" class="btn btn-primary" 
-        data-bs-toggle="modal" 
-        data-bs-target="#mobilModal" 
-        data-id="{{ $peminjaman->mobil_id }}"
-        data-nama="{{ $peminjaman->mobil->nama_mobil }}" 
-        data-plat="{{ $peminjaman->mobil->plat_nomor }}">
-        Kembalikan
-    </button>
-@endforeach  
+        @if (Auth::check() && Auth::user()->id === $peminjaman->user_id)
+            <button type="button" class="btn btn-primary" 
+                data-bs-toggle="modal" 
+                data-bs-target="#mobilModal" 
+                data-id="{{ $peminjaman->mobil_id }}"
+                data-nama="{{ $peminjaman->mobil->nama_mobil }}" 
+                data-plat="{{ $peminjaman->mobil->plat_nomor }}">
+                Kembalikan
+            </button>
+        @endif
+    @endforeach  
 
     <!-- Modal -->
     <div class="modal fade" id="mobilModal" tabindex="-1" aria-labelledby="mobilModalLabel" aria-hidden="true">
@@ -30,10 +32,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formPeminjaman" method="POST" action="{{ route('peminjaman.return') }}" enctype="multipart/form-data">
+                    <form id="formPeminjaman" method="POST" action="{{ route('pengembalian.store') }}" enctype="multipart/form-data">
                         @csrf
-                        <input type="text" name="user_id" value="{{ Auth::id() }}" readonly>
-                        <input type="text" id="mobil_id" name="mobil_id" value="" readonly>
                         <div class="mb-3">
                             <label for="nama_mobil" class="form-label">Nama Mobil</label>
                             <input type="text" class="form-control" id="nama_mobil" name="nama_mobil" value="" readonly>
@@ -43,7 +43,7 @@
                             <input type="text" class="form-control" id="plat_nomor" name="plat_nomor" value="" readonly>
                         </div>
                         <div class="mb-3">
-                            <label for="tanggal_pengembalian" class="form-label">Tanggal</label>
+                            <label for="tanggal_pengembalian" class="form-label">Tanggal Pengembalian</label>
                             <input type="date" class="form-control" id="tanggal_pengembalian" name="tanggal_pengembalian" required>
                         </div>
                         <div class="mb-3">
@@ -57,6 +57,8 @@
                         <div class="mb-3">
                             <label for="deskripsiKondisi" class="form-label">Deskripsi Kondisi (optional)</label>
                             <textarea class="form-control" rows="3" id="deskripsiKondisi" name="deskripsiKondisi"></textarea>
+                            <input type="text" name="user_id" value="{{ Auth::id() }}">
+                            <input type="text" id="mobil_id" name="mobil_id" value="">
                         </div>
                         <button type="submit" name="submit" class="btn btn-primary">Kembalikan Mobil</button>
                     </form>
@@ -83,7 +85,6 @@
                 modalPlatNomor.value = platNomor;
                 modalMobilId.value = mobilId;
             });
-
         });
     </script>
 @endsection
