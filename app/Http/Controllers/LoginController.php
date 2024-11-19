@@ -25,7 +25,6 @@ class LoginController extends Controller
      */
     public function create(Request $request)
     {
-        //validasi form
         $credentials = $request->validate([
             'username' => ['required', 'exists:users,username'],
             'password' => ['required'],
@@ -34,15 +33,14 @@ class LoginController extends Controller
         if(Auth::attempt($credentials)){
             $request->session()->regenerate();
             
-            $level = Auth::user()->role; // Pastikan role yang benar diambil
-    
-            // Debugging
+            $level = Auth::user()->role; 
+           
             \Log::info('User logged in:', ['username' => Auth::user()->username, 'role' => $level]);
     
             if ($level == 'admin') {
-                return redirect()->intended('/dashboard'); // Pastikan ini mengarah ke dashboard
+                return redirect()->intended('/dashboard'); 
             } else {
-                return redirect()->intended('/'); // Atau ke halaman lain sesuai kebutuhan
+                return redirect()->intended('/home'); 
             }
         } 
         

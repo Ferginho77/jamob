@@ -40,12 +40,8 @@ class PeminjamanController extends Controller
      {
          // Ambil data hanya dari tabel peminjaman
          $peminjamans = Peminjaman::with(['mobil', 'user'])->get(); // Include user data in the query
-
-        return view('home', [
-            'peminjamans' => $peminjamans,
-            'totalMobil' => Mobil::where('status', 'Ada')->count(),
-            'totalPeminjam' => $peminjamans->count(),
-        ]);
+        
+        return view('/', compact('peminjamans'));
      }
 
 

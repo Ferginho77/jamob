@@ -4,6 +4,7 @@
 
 @section('content')
 
+
 <div class="container">
     <div class="py-5 text-center bg-image img-fluid">
         <img src="/img/car0.png" class="img-fluid" alt="Mobil Image">
@@ -11,7 +12,8 @@
     </div>
 
     @foreach ($peminjamans as $peminjaman)
-        @if (Auth::check() && Auth::user()->id === $peminjaman->user_id)
+   
+        <!-- @if (Auth::check() && Auth::user()->id === $peminjaman->user_id) -->
             <button type="button" class="btn btn-primary" 
                 data-bs-toggle="modal" 
                 data-bs-target="#mobilModal" 
@@ -20,7 +22,7 @@
                 data-plat="{{ $peminjaman->mobil->plat_nomor }}">
                 Kembalikan
             </button>
-        @endif
+        <!-- @endif -->
     @endforeach  
 
     <!-- Modal -->

@@ -47,7 +47,7 @@ class PengembalianController extends Controller
         ]);
 
         // Redirect ke halaman home dengan pesan sukses
-        return redirect()->route('home')->with('success', 'Mobil berhasil dikembalikan.');
+        return redirect()->route('/')->with('success', 'Mobil berhasil dikembalikan.');
 
     }
     public function index()

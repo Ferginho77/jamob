@@ -10,7 +10,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 
 // Route untuk halaman home
-Route::get('/', [HomeController::class, 'home']);
+Route::get('/', [LoginController::class, 'login']);
 
 // Rute untuk detail peminjaman
 Route::get('/peminjamans', [HomeController::class, 'detail'])->name('detail');
