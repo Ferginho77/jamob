@@ -11,48 +11,50 @@
                     <div class="card-body d-flex align-items-center">
                         <div class="flex-grow-1 p-3">
                             <h3 class="text-center fs-1 my-4 display-4">Login</h3>
-                            <form method="post" class="w-100">
+                            <form method="post" action="{{ route('login') }}" class="w-100">
+                                @if($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
                                 @csrf
                                 <div class="form-floating mb-3">
-                                    <input 
-                                        class="form-control" 
-                                        id="username" 
-                                        required 
-                                        type="text" 
-                                        name="username" 
+                                    <input
+                                        class="form-control"
+                                        id="username"
+                                        value="{{ old('username') }}"
+                                        type="text"
+                                        name="username"
                                         placeholder="Username"
                                     />
                                     <label for="username">Username</label>
                                 </div>
-                                <div class="form-floating mb-3 ">
-                                    <input 
-                                        class="form-control" 
-                                        id="password" 
-                                        required 
-                                        type="password" 
-                                        name="password" 
+                                <div class="form-floating mb-3">
+                                    <input
+                                        class="form-control"
+                                        id="password"
+                                        type="password"
+                                        name="password"
                                         placeholder="Password"
                                     />
                                     <label for="password">Password</label>
                                 </div>
                                 <div class="d-grid gap-2 mx-auto">
-                                    <button 
-                                        class="btn btn-primary btn-lg" 
-                                        type="submit" 
-                                        name="login" 
-                                        value="login"
-                                    >
-                                        Login
-                                    </button>
+                                    <button class="btn btn-primary btn-lg" type="submit">Login</button>
                                 </div>
                             </form>
+
                         </div>
                         <div class="border-start ps-3 ms-3 d-none d-md-block">
-                            <img 
-                                src="/img/logo-perumda-tr.png" 
-                                class="img-fluid" 
+                            <img
+                                src="/img/logo-perumda-tr.png"
+                                class="img-fluid"
                                 alt="Logo"
-                                style="max-width: 200px; height: auto;"  
+                                style="max-width: 200px; height: auto;"
                             >
                         </div>
                     </div>
