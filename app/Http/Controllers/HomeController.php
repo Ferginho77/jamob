@@ -12,10 +12,11 @@ class HomeController extends Controller
 {
     public function home()
     {
-        // Mengambil data mobil yang statusnya 'ada' dan data lainnya
-        $data['mobils'] = Mobil::with('user')->get(); // Mengambil mobil beserta user
-        $data['peminjamans'] = Peminjaman::with(['mobil', 'user'])->get(); // Mengambil mobil beserta user
-        return view('home', $data);
+        // Mengambil data mobil yang statusnya 'ada' dan data lain
+        $peminjamans = Peminjaman::where('user_id', auth()->id())
+        ->with('mobil', 'user')
+        ->get(); // Mengambil mobil beserta user
+        return view('home', compact('peminjamans'));
     }
 
     public function dashboard()

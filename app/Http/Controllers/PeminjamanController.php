@@ -17,8 +17,12 @@ class PeminjamanController extends Controller
      */
     public function index()
     {
-        $data['peminjaman'] = Peminjaman::all();
-        return view('peminjaman.index', ($data));
+        $peminjamans = Peminjaman::where('user_id', auth()->id())
+        ->with('mobil') // Include data mobil
+        ->get();
+
+    // Kembali ke view 'home' dan kirim data peminjaman
+    return view('home', compact('peminjamans'));
     }
 
     /**

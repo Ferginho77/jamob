@@ -3,16 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use App\Models\Peminjaman;
+use App\Models\Pengembalian;
 use App\Models\Mobil;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MobilController extends Controller
 {
     public function index()
     {
-        // Mengambil semua mobil dari database
-        $data['mobil'] = Mobil::all();
-        return view('mobil.index', ($data));
+        $mobils = Mobil::where('user_id', auth()->id())
+        ->where('status', 'Dipinjam')
+        ->get();
+
+        return view('mobil.index', compact('mobils'));
     }
 
     /**
@@ -67,11 +72,54 @@ class MobilController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function returnMobil(Request $request, $id)
     {
-        //
-    }
 
+        $request->validate([
+            'nama_mobil' => 'required|string|max:255',
+            'plat_nomor' => 'required|string|max:255',
+            'tanggal_pengembalian' => 'required|date',
+            'kondisiMobil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'kondisiBensin' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'deskripsiKondisi' => 'nullable|string',
+            'mobil_id' => 'required|exists:mobil,id',
+        ]);
+    
+        DB::transaction(function () use ($request, $id) {
+            // Ambil data peminjaman
+            $peminjaman = Peminjaman::findOrFail($id);
+    
+            // Simpan file kondisi terakhir mobil jika ada
+            $kondisiMobilPath = $request->hasFile('kondisiMobil')
+            ? $request->file('kondisiMobil')->store('kondisi_mobil')
+            : null;
+        $kondisiBensinPath = $request->hasFile('kondisiBensin')
+            ? $request->file('kondisiBensin')->store('kondisi_bensin')
+            : null;
+    
+            // Pindahkan data ke tabel pengembalian
+            Pengembalian::create([
+                'nama_mobil' => $request->nama_mobil,
+            'plat_nomor' => $request->plat_nomor,
+            'tanggal_pengembalian' => $request->tanggal_pengembalian,
+            'kondisi_fisik' => $kondisiMobilPath,
+            'bensin' => $kondisiBensinPath,
+            'deskripsi' => $request->deskripsiKondisi,
+            'mobil_id' => $request->mobil_id,
+            'user_id' => Auth::id(),
+            ]);
+    
+            // Ubah status mobil menjadi "Ada"
+            $mobil = Mobil::findOrFail($request->mobil_id);
+            $mobil->update([
+                'status' => 'Ada',
+            ]);
+    
+            // Hapus data dari tabel peminjaman
+            $peminjaman->delete();
+        });
+    return redirect('home');
+    }
     /**
      * Show the form for editing the specified resource.
      *

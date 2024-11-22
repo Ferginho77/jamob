@@ -8,23 +8,38 @@
 <div class="container">
     <div class="py-5 text-center bg-image img-fluid">
         <img src="/img/car0.png" class="img-fluid" alt="Mobil Image">
-        <div class="text-black"><h1>PEMINJAMAN MOBIL</h1></div>
+        <div class="text-black"><h1>PENGEMBALIAN MOBIL</h1></div>
     </div>
 
+    <div class="card">
     @foreach ($peminjamans as $peminjaman)
-   
-        <!-- @if (Auth::check() && Auth::user()->id === $peminjaman->user_id) -->
-            <button type="button" class="btn btn-primary" 
-                data-bs-toggle="modal" 
-                data-bs-target="#mobilModal" 
-                data-id="{{ $peminjaman->mobil_id }}"
-                data-nama="{{ $peminjaman->mobil->nama_mobil }}" 
-                data-plat="{{ $peminjaman->mobil->plat_nomor }}">
-                Kembalikan
-            </button>
-        <!-- @endif -->
-    @endforeach  
-
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="{{ asset('img/' . $peminjaman->mobil->gambar) }}" class="card-img-top img-fluid pt-3" alt="{{ $peminjaman->mobil->nama_mobil }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $peminjaman->mobil->nama_mobil }}</h5>
+                            <p class="card-text">Nama Peminjam : {{ $peminjaman->user->username }}</p>
+                            <p class="card-text">Tanggal Pinjam: {{ $peminjaman->tanggal_peminjaman }}</p>
+                            <p class="card-text">Tujuan: {{ $peminjaman->tujuan }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        
+            @foreach ($peminjamans as $peminjaman)
+                @if (Auth::check() && Auth::user()->id === $peminjaman->user_id) 
+            
+                    <button type="button" class="btn btn-primary" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#mobilModal" 
+                        data-id="{{ $peminjaman->mobil_id }}"
+                        data-nama="{{ $peminjaman->mobil->nama_mobil }}" 
+                        data-plat="{{ $peminjaman->mobil->plat_nomor }}">
+                        Kembalikan
+                    </button>
+                @endif 
+            @endforeach  
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="mobilModal" tabindex="-1" aria-labelledby="mobilModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -34,7 +49,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formPeminjaman" method="POST" action="{{ route('pengembalian.store') }}" enctype="multipart/form-data">
+                @foreach ($peminjamans as $peminjaman)
+                    <form id="formPeminjaman" method="POST" action="{{  route('mobil.kembali', $peminjaman->id) }}" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
                             <label for="nama_mobil" class="form-label">Nama Mobil</label>
@@ -59,11 +75,12 @@
                         <div class="mb-3">
                             <label for="deskripsiKondisi" class="form-label">Deskripsi Kondisi (optional)</label>
                             <textarea class="form-control" rows="3" id="deskripsiKondisi" name="deskripsiKondisi"></textarea>
-                            <input type="text" name="user_id" value="{{ Auth::id() }}">
-                            <input type="text" id="mobil_id" name="mobil_id" value="">
+                            <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                            <input type="hidden" id="mobil_id" name="mobil_id" value="">
                         </div>
                         <button type="submit" name="submit" class="btn btn-primary">Kembalikan Mobil</button>
                     </form>
+                @endforeach     
                 </div>
             </div>
         </div>

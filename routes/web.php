@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MobilController;
 
 // Route utama
 Route::get('/', [LoginController::class, 'index'])->name('login')->middleware('guest');
@@ -31,7 +32,8 @@ Route::get('/peminjaman/home', [PeminjamanController::class, 'pinjam'])->name('p
 Route::get('/permintaan', [HomeController::class, 'permintaan'])->name('permintaan')->middleware('auth');
 
 // Route untuk pengembalian mobil
-Route::post('/pengembalian/store', [PengembalianController::class, 'store'])->name('pengembalian.store');
+// Route::post('/pengembalian/store', [PengembalianController::class, 'store'])->name('pengembalian.store');
+Route::post('/mobil-kembali/{peminjamanId}', [MobilController::class, 'returnMobil'])->name('mobil.kembali');
 Route::get('/pengembalian/home', [PengembalianController::class, 'index'])->name('pengembalian.home')->middleware('auth');
 
 // Route untuk daftar mobil

@@ -26,7 +26,6 @@ class PengembalianController extends Controller
             'mobil_id' => 'required|exists:mobil,id',
         ]);
 
-        // Menyimpan file jika diupload
         $kondisiMobilPath = $request->hasFile('kondisiMobil')
             ? $request->file('kondisiMobil')->store('kondisi_mobil')
             : null;
@@ -34,7 +33,7 @@ class PengembalianController extends Controller
             ? $request->file('kondisiBensin')->store('kondisi_bensin')
             : null;
 
-        // Simpan data ke database
+   
         Pengembalian::create([
             'nama_mobil' => $request->nama_mobil,
             'plat_nomor' => $request->plat_nomor,
@@ -46,7 +45,6 @@ class PengembalianController extends Controller
             'user_id' => Auth::id(),
         ]);
 
-        // Redirect ke halaman home dengan pesan sukses
         return redirect('home');
 
     }

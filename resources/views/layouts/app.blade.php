@@ -52,7 +52,7 @@
         @yield('content')
     </main>
 
-    <footer class="text-center fixed-bottom">
+    <footer class="text-center relative-bottom">
         <div class="container p-4"></div>
         <div class="text-center text-black p-3 bg-secondary">
             © 2024

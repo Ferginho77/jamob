@@ -30,4 +30,8 @@ class Mobil extends Model
         return $this->belongsTo(User::class, 'id'); 
     }
 
+    public function mobil()
+{
+    return $this->belongsTo(Mobil::class);
+}
 }
