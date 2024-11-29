@@ -74,41 +74,83 @@
                 </div>
                 <div class="card-body">
                
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Mobil</th>
-                                <th scope="col">Plat Nomor</th>
-                                <th scope="col">Nama Peminjam</th>
-                                <th scope="col">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($peminjamans as $x)
-                                <tr>
-                                    <td>{{ $x->mobil->nama_mobil ?? 'N/A' }}</td> <!-- Displaying mobil name -->
-                                    <td>{{ $x->mobil->plat_nomor ?? 'N/A' }}</td> <!-- Displaying plat nomor -->
-                                    <td>{{ $x->user->username ?? 'N/A' }}</td> <!-- Displaying user name -->
-                                    <td>{{ $x->status }}</td> 
-                                </tr>
-                            @endforeach
-                        </tbody>           
-                    </table>
-                </div>
-            </div>
-        </div>
+                <table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Mobil</th>
+            <th scope="col">Plat Nomor</th>
+            <th scope="col">Nama Peminjam</th>
+            <th scope="col">Deskripsi</th>
+            <th scope="col">Jam DiKembalikan</th>
+            <th scope="col">Kondisi</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($pengembalians as $x)
+            <tr>
+                <td>{{ $x->nama_mobil ?? 'N/A' }}</td>  
+                <td>{{ $x->plat_nomor ?? 'N/A' }}</td>  
+                <td>{{ $x->user->username ?? 'N/A' }}</td>  
+                <td>{{ $x->deskripsi }}</td> 
+                <td>{{ $x->created_at }}</td> 
+                <td>
+                    <button type="button" class="btn btn-primary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#kondisiModal"
+                            data-bensin="{{ asset('img/' . $x->bensin) }}"
+                            data-fisik="{{ asset('img/' . $x->kondisi_fisik ) }}"
+                            data-id="{{ $x->mobil_id }}">
+                        Cek Kondisi
+                    </button>
+                </td> 
+            </tr>
+        @endforeach
+    </tbody>
+</table>
 
-        <div class="col-xl-4 col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h2>Laporan</h2>
-                </div>
-                <div class="card-body">
-                    <!-- Report content can be added here -->
-                </div>
+<!-- Modal Structure (Place this outside the loop) -->
+<div class="modal fade" id="kondisiModal" tabindex="-1" aria-labelledby="mobilModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mobilModalLabel">Foto Mobil</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <input type="hidden" id="mobil_id" name="mobil_id" value="">
+                <h4>Kondisi Fisik</h4>
+                <img id="kondisi_fisik" src="" alt="Fisik" class="img-fluid">
+                <h4>Kondisi Bensin</h4>
+                <img id="bensin" src="" alt="Bensin" class="img-fluid">
             </div>
         </div>
     </div>
 </div>
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const kondisiModal = document.getElementById('kondisiModal');
+
+    kondisiModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget; // Button that triggered the modal
+        const kondisi = button.getAttribute('data-fisik'); 
+        const bensin = button.getAttribute('data-bensin');
+        const mobilId = button.getAttribute('data-id');
+
+        console.log("Kondisi Fisik:", kondisi); // Debugging
+        console.log("Bensin:", bensin);         // Debugging
+
+
+        console.log("ID:", mobilId); // Debugging
+
+        const modalKondisiFisik = kondisiModal.querySelector('#kondisi_fisik');
+        const modalBensin = kondisiModal.querySelector('#bensin');
+        const modalMobilId = kondisiModal.querySelector('#mobil_id');
+        
+        modalKondisiFisik.src = kondisi;
+        modalBensin.src = bensin;
+        modalMobilId.value = mobilId;
+    });
+});
+</script>
 @endsection

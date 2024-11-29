@@ -52,7 +52,7 @@ class PengembalianController extends Controller
 {
     $pengembalians = Pengembalian::all();
 
-    return view('home', compact('pengembalians'));
+    return view('dashboard', compact('pengembalians'));
 }
 
 }

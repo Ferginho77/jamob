@@ -10,36 +10,43 @@
         <img src="/img/car0.png" class="img-fluid" alt="Mobil Image">
         <div class="text-black"><h1>PENGEMBALIAN MOBIL</h1></div>
     </div>
-
+    
     <div class="card">
-    @foreach ($peminjamans as $peminjaman)
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="{{ asset('img/' . $peminjaman->mobil->gambar) }}" class="card-img-top img-fluid pt-3" alt="{{ $peminjaman->mobil->nama_mobil }}">
+    @if ($peminjamans->isEmpty())
+        <div class="card-header" role="alert">
+            Tidak ada peminjaman yang sedang berlangsung.
+        </div>
+    @else
+        <div class="row position-relative">
+            @foreach ($peminjamans as $peminjaman)
+                <div class="col-md-6 p-3 ">
+                    <div class="card mb-2 position-relative top-50 start-100 translate-middle">     
+                        <div class="text-center"> <!-- Tambahkan div ini untuk men-center gambar -->
+                            <img src="{{ asset('img/' . $peminjaman->mobil->gambar) }}" class="card-img-top img-fluid pt-3" alt="{{ $peminjaman->mobil->nama_mobil }}">
+                        </div>
                         <div class="card-body">
                             <h5 class="card-title">{{ $peminjaman->mobil->nama_mobil }}</h5>
                             <p class="card-text">Nama Peminjam : {{ $peminjaman->user->username }}</p>
                             <p class="card-text">Tanggal Pinjam: {{ $peminjaman->tanggal_peminjaman }}</p>
                             <p class="card-text">Tujuan: {{ $peminjaman->tujuan }}</p>
+                            
+                            @if (Auth::check() && Auth::user()->id === $peminjaman->user_id)
+                                <button type="button" class="btn btn-primary" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#mobilModal" 
+                                    data-id="{{ $peminjaman->mobil_id }}"
+                                    data-nama="{{ $peminjaman->mobil->nama_mobil }}" 
+                                    data-plat="{{ $peminjaman->mobil->plat_nomor }}">
+                                    Kembalikan
+                                </button>
+                            @endif
                         </div>
                     </div>
                 </div>
             @endforeach
-        
-            @foreach ($peminjamans as $peminjaman)
-                @if (Auth::check() && Auth::user()->id === $peminjaman->user_id) 
-            
-                    <button type="button" class="btn btn-primary" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#mobilModal" 
-                        data-id="{{ $peminjaman->mobil_id }}"
-                        data-nama="{{ $peminjaman->mobil->nama_mobil }}" 
-                        data-plat="{{ $peminjaman->mobil->plat_nomor }}">
-                        Kembalikan
-                    </button>
-                @endif 
-            @endforeach  
-    </div>
+        </div>
+    @endif
+</div>
     <!-- Modal -->
     <div class="modal fade" id="mobilModal" tabindex="-1" aria-labelledby="mobilModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -66,11 +73,11 @@
                         </div>
                         <div class="mb-3">
                             <label for="kondisiMobil" class="form-label">Kondisi Terakhir (Foto)</label>
-                            <input class="form-control" type="file" id="kondisiMobil" name="kondisiMobil" accept="image/*">
+                            <input class="form-control" type="file" id="kondisi_fisik" name="kondisi_fisik" accept="image/*">
                         </div>
                         <div class="mb-3">
                             <label for="kondisiBensin" class="form-label">Bensin (Foto)</label>
-                            <input class="form-control" type="file" id="kondisiBensin" name="kondisiBensin" accept="image/*">
+                            <input class="form-control" type="file" id="bensin" name="bensin" accept="image/*">
                         </div>
                         <div class="mb-3">
                             <label for="deskripsiKondisi" class="form-label">Deskripsi Kondisi (optional)</label>

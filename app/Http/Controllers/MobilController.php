@@ -90,12 +90,20 @@ class MobilController extends Controller
             $peminjaman = Peminjaman::findOrFail($id);
     
             // Simpan file kondisi terakhir mobil jika ada
-            $kondisiMobilPath = $request->hasFile('kondisiMobil')
-            ? $request->file('kondisiMobil')->store('kondisi_mobil')
-            : null;
-        $kondisiBensinPath = $request->hasFile('kondisiBensin')
-            ? $request->file('kondisiBensin')->store('kondisi_bensin')
-            : null;
+            $kondisiMobilPath = null;
+            $kondisiBensinPath = null;
+        
+            if ($request->hasFile('kondisi_fisik')) {
+                $file = $request->file('kondisi_fisik');
+                $kondisiMobilPath = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('img'), $kondisiMobilPath); // Move to public/img
+            }
+        
+            if ($request->hasFile('bensin')) {
+                $file = $request->file('bensin');
+                $kondisiBensinPath = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('img'), $kondisiBensinPath); // Move to public/img
+            }
     
             // Pindahkan data ke tabel pengembalian
             Pengembalian::create([

@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PeminjamanController;
-use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MobilController;
 
@@ -21,6 +20,7 @@ Route::get('/home', function () {
 
 // Route untuk dashboard admin
 Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard')->middleware('auth');
+// Route::get('/dashboard', [MobilController::class, 'hitung'])->name('dashboard')->middleware('auth');
 
 //route home
 Route::get('/home', [HomeController::class, 'home'])->name('home')->middleware('auth');
@@ -31,10 +31,11 @@ Route::get('/peminjaman/home', [PeminjamanController::class, 'pinjam'])->name('p
 // Route untuk permintaan
 Route::get('/permintaan', [HomeController::class, 'permintaan'])->name('permintaan')->middleware('auth');
 
+// Roure untuk pemeliharaan
+Route::get('/pemeliharaan', [HomeController::class, 'pemeliharaan'])->name('pemeliharaan')->middleware('auth');
+
 // Route untuk pengembalian mobil
-// Route::post('/pengembalian/store', [PengembalianController::class, 'store'])->name('pengembalian.store');
 Route::post('/mobil-kembali/{peminjamanId}', [MobilController::class, 'returnMobil'])->name('mobil.kembali');
-Route::get('/pengembalian/home', [PengembalianController::class, 'index'])->name('pengembalian.home')->middleware('auth');
 
 // Route untuk daftar mobil
 Route::get('/mobil', [HomeController::class, 'mobil'])->middleware('auth')->name('mobil');

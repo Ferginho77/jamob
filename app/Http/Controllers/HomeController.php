@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Mobil;
+use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use Illuminate\Support\Facades\Log; // Import Log
 use App\Models\Peminjaman;
+use App\Models\Pengembalian;
 use App\Models\Wilayah;
 
 class HomeController extends Controller
@@ -21,13 +24,17 @@ class HomeController extends Controller
 
     public function dashboard()
     {
-        $peminjamans = Peminjaman::with(['mobil', 'user'])->get(); // Include user data in the query
+        $pengembalians = Pengembalian::all();
+        
+        $totalMobil = DB::table('mobil')->where('status', 'Ada')->count();
+        $totalPeminjam = DB::table('peminjaman')->count(); 
 
-        return view('dashboard', [
-            'peminjamans' => $peminjamans,
-            'totalMobil' => Mobil::where('status', 'Ada')->count(),
-            'totalPeminjam' => $peminjamans->count(),
+        return view('dashboard', compact('pengembalians'),
+        [
+            'totalMobil' => $totalMobil,
+            'totalPeminjam' => $totalPeminjam
         ]);
+
     }
 
 
@@ -35,6 +42,11 @@ class HomeController extends Controller
     {
         $data['mobils'] = Mobil::with('user')->get(); // Mengambil mobil beserta user
         return view('peminjaman', $data);
+    }
+    public function pemeliharaan()
+    {
+        $data['mobils'] = Mobil::get(); // Mengambil mobil
+        return view('pemeliharaan', $data);
     }
 
     public function index()
