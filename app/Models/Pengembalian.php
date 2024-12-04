@@ -20,6 +20,7 @@ class Pengembalian extends Model
         'kondisi_fisik',
         'bensin',
         'deskripsi', 
+        'location', 
         'mobil_id', 
         'user_id', 
         'created_at',

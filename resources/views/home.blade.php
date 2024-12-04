@@ -19,8 +19,8 @@
     @else
         <div class="row position-relative">
             @foreach ($peminjamans as $peminjaman)
-                <div class="col-md-6 p-3 ">
-                    <div class="card mb-2 position-relative top-50 start-100 translate-middle">     
+                <div class="col-md-6 p-4">
+                    <div class="mb-2 position-relative top-50 start-50 translate-middle">     
                         <div class="text-center"> <!-- Tambahkan div ini untuk men-center gambar -->
                             <img src="{{ asset('img/' . $peminjaman->mobil->gambar) }}" class="card-img-top img-fluid pt-3" alt="{{ $peminjaman->mobil->nama_mobil }}">
                         </div>
@@ -36,7 +36,8 @@
                                     data-bs-target="#mobilModal" 
                                     data-id="{{ $peminjaman->mobil_id }}"
                                     data-nama="{{ $peminjaman->mobil->nama_mobil }}" 
-                                    data-plat="{{ $peminjaman->mobil->plat_nomor }}">
+                                    data-plat="{{ $peminjaman->mobil->plat_nomor }}"
+                                    >
                                     Kembalikan
                                 </button>
                             @endif
@@ -82,10 +83,11 @@
                         <div class="mb-3">
                             <label for="deskripsiKondisi" class="form-label">Deskripsi Kondisi (optional)</label>
                             <textarea class="form-control" rows="3" id="deskripsiKondisi" name="deskripsiKondisi"></textarea>
+                            <input type="text" id="location" name="location">
                             <input type="hidden" name="user_id" value="{{ Auth::id() }}">
                             <input type="hidden" id="mobil_id" name="mobil_id" value="">
                         </div>
-                        <button type="submit" name="submit" class="btn btn-primary">Kembalikan Mobil</button>
+                        <button type="submit" name="submit" id="submit" class="btn btn-primary">Kembalikan Mobil</button>
                     </form>
                 @endforeach     
                 </div>
@@ -112,5 +114,21 @@
                 modalMobilId.value = mobilId;
             });
         });
+
+        const lokasi = document.getElementById('location');
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(success, ErrorCall);
+            } else {
+                alert("Mohon Aktifkan Lokasi Anda");
+            }
+
+            function success(position) {
+                lokasi.value = position.coords.latitude + ',' + position.coords.longitude;
+            }
+
+            function ErrorCall(error) {
+            alert("Mohon Aktifkan Lokasi Anda");
+            }
     </script>
 @endsection

@@ -60,5 +60,9 @@
     </footer>
 
     <script src="{{ mix('js/app.js') }}" defer></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
+      defer
+    ></script>
 </body>
 </html>

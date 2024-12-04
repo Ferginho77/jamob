@@ -70,7 +70,7 @@
         <div class="col-xl-8 col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h2>Log Peminjaman</h2>
+                    <h2>Pengembalian</h2>
                 </div>
                 <div class="card-body">
                

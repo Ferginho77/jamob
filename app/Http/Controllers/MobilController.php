@@ -82,6 +82,7 @@ class MobilController extends Controller
             'kondisiMobil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'kondisiBensin' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'deskripsiKondisi' => 'nullable|string',
+            'location' => 'required|nullable|string',
             'mobil_id' => 'required|exists:mobil,id',
         ]);
     
@@ -107,12 +108,13 @@ class MobilController extends Controller
     
             // Pindahkan data ke tabel pengembalian
             Pengembalian::create([
-                'nama_mobil' => $request->nama_mobil,
+            'nama_mobil' => $request->nama_mobil,
             'plat_nomor' => $request->plat_nomor,
             'tanggal_pengembalian' => $request->tanggal_pengembalian,
             'kondisi_fisik' => $kondisiMobilPath,
             'bensin' => $kondisiBensinPath,
             'deskripsi' => $request->deskripsiKondisi,
+            'location' => $request->location,
             'mobil_id' => $request->mobil_id,
             'user_id' => Auth::id(),
             ]);
@@ -126,7 +128,7 @@ class MobilController extends Controller
             // Hapus data dari tabel peminjaman
             $peminjaman->delete();
         });
-    return redirect('home');
+    return redirect('home')->withErrors('Mohon Aktifkan Lokasi Anda');
     }
     /**
      * Show the form for editing the specified resource.
