@@ -83,7 +83,7 @@
                         <div class="mb-3">
                             <label for="deskripsiKondisi" class="form-label">Deskripsi Kondisi (optional)</label>
                             <textarea class="form-control" rows="3" id="deskripsiKondisi" name="deskripsiKondisi"></textarea>
-                            <input type="text" id="location" name="location">
+                            <input type="hidden" id="location" name="location">
                             <input type="hidden" name="user_id" value="{{ Auth::id() }}">
                             <input type="hidden" id="mobil_id" name="mobil_id" value="">
                         </div>

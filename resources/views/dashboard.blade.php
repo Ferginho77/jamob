@@ -82,6 +82,7 @@
             <th scope="col">Nama Peminjam</th>
             <th scope="col">Deskripsi</th>
             <th scope="col">Jam DiKembalikan</th>
+            <th scope="col">Kordinat Pengembalian</th>
             <th scope="col">Kondisi</th>
         </tr>
     </thead>
@@ -93,12 +94,16 @@
                 <td>{{ $x->user->username ?? 'N/A' }}</td>  
                 <td>{{ $x->deskripsi }}</td> 
                 <td>{{ $x->created_at }}</td> 
+                <td>{{ $x->location }}</td> 
                 <td>
                     <button type="button" class="btn btn-primary"
                             data-bs-toggle="modal"
                             data-bs-target="#kondisiModal"
                             data-bensin="{{ asset('img/' . $x->bensin) }}"
                             data-fisik="{{ asset('img/' . $x->kondisi_fisik ) }}"
+                            url-fisik="${{ $x->kondisi_fisik }}"
+                            url-bensin="{{ $x->bensin }}"
+                            url-deskripsi="{{ $x->deskripsi }}"
                             data-id="{{ $x->mobil_id }}">
                         Cek Kondisi
                     </button>
@@ -117,15 +122,28 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-            <input type="hidden" id="mobil_id" name="mobil_id" value="">
-                <h4>Kondisi Fisik</h4>
-                <img id="kondisi_fisik" src="" alt="Fisik" class="img-fluid">
-                <h4>Kondisi Bensin</h4>
-                <img id="bensin" src="" alt="Bensin" class="img-fluid">
+                <!-- Form untuk pemeliharaan -->
+                <form action="{{ route('pemeliharaan') }}" method="POST">
+                    @csrf
+                    <input type="hidden" id="mobil_id" name="mobil_id" value="">
+
+                    <h4>Kondisi Fisik</h4>
+                    <img id="kondisi_fisik" src="" alt="Fisik" style="max-width: 100%; height: auto;">
+                  
+                    <input type="hidden" id="url_fisik" name="url_fisik" value="">
+
+                    <h4>Kondisi Bensin</h4>
+                    <img id="bensin" src="" alt="Bensin" style="max-width: 100%; height: auto;">
+                  
+                    <input type="hidden" id="url_bensin" name="url_bensin" value="">
+                    <input type="text" id="deskripsi" name="deskripsi" value="">
+                    <button type="submit" name="submit" id="submit" class="btn btn-danger">Buat Pemeliharaan</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -136,21 +154,27 @@ document.addEventListener('DOMContentLoaded', function () {
         const kondisi = button.getAttribute('data-fisik'); 
         const bensin = button.getAttribute('data-bensin');
         const mobilId = button.getAttribute('data-id');
+        const deskripsi = button.getAttribute('url-deskripsi');
 
-        console.log("Kondisi Fisik:", kondisi); // Debugging
-        console.log("Bensin:", bensin);         // Debugging
-
-
-        console.log("ID:", mobilId); // Debugging
-
+        // Elemen-elemen untuk gambar di modal
         const modalKondisiFisik = kondisiModal.querySelector('#kondisi_fisik');
         const modalBensin = kondisiModal.querySelector('#bensin');
         const modalMobilId = kondisiModal.querySelector('#mobil_id');
-        
+        const modalUrlFisik = kondisiModal.querySelector('#url_fisik');
+        const modalUrlBensin = kondisiModal.querySelector('#url_bensin');
+        const modalDeskripsi = kondisiModal.querySelector('#deskripsi');
+        // Update gambar di modal
         modalKondisiFisik.src = kondisi;
         modalBensin.src = bensin;
+
+        // Set input hidden URL gambar
+        modalUrlFisik.value = kondisi;
+        modalUrlBensin.value = bensin;
+        modalDeskripsi.value = deskripsi;
+        // Set mobil_id yang dipilih ke input hidden
         modalMobilId.value = mobilId;
     });
 });
 </script>
+
 @endsection
