@@ -5,9 +5,9 @@
 @section('content')
 
 <div class="container-fluid">
-    
+
     <div class="row mt-5">
-        
+
         <div class="col-xl-3 col-md-6">
             <div class="card bg-primary text-white mb-4">
                 <div class="card-body"> Mobil Tersedia : {{ $totalMobil }}</div>
@@ -73,7 +73,7 @@
                     <h2>Pengembalian</h2>
                 </div>
                 <div class="card-body">
-               
+
                 <table class="table">
     <thead>
         <tr>
@@ -89,12 +89,12 @@
     <tbody>
         @foreach ($pengembalians as $x)
             <tr>
-                <td>{{ $x->nama_mobil ?? 'N/A' }}</td>  
-                <td>{{ $x->plat_nomor ?? 'N/A' }}</td>  
-                <td>{{ $x->user->username ?? 'N/A' }}</td>  
-                <td>{{ $x->deskripsi }}</td> 
-                <td>{{ $x->created_at }}</td> 
-                <td>{{ $x->location }}</td> 
+                <td>{{ $x->nama_mobil ?? 'N/A' }}</td>
+                <td>{{ $x->plat_nomor ?? 'N/A' }}</td>
+                <td>{{ $x->user->username ?? 'N/A' }}</td>
+                <td>{{ $x->deskripsi }}</td>
+                <td>{{ $x->created_at }}</td>
+                <td>{{ $x->location }}</td>
                 <td>
                     <button type="button" class="btn btn-primary"
                             data-bs-toggle="modal"
@@ -107,7 +107,7 @@
                             data-id="{{ $x->mobil_id }}">
                         Cek Kondisi
                     </button>
-                </td> 
+                </td>
             </tr>
         @endforeach
     </tbody>
@@ -125,17 +125,17 @@
                 <!-- Form untuk pemeliharaan -->
                 <form action="{{ route('pemeliharaan') }}" method="POST">
                     @csrf
-                    <input type="hidden" id="mobil_id" name="mobil_id" value="">
+                    <input type="text" id="mobil_id" name="mobil_id" value="">
 
                     <h4>Kondisi Fisik</h4>
                     <img id="kondisi_fisik" src="" alt="Fisik" style="max-width: 100%; height: auto;">
-                  
-                    <input type="hidden" id="url_fisik" name="url_fisik" value="">
+
+                    <input type="text" id="url_fisik" name="kondisi_fisik" value="">
 
                     <h4>Kondisi Bensin</h4>
-                    <img id="bensin" src="" alt="Bensin" style="max-width: 100%; height: auto;">
-                  
-                    <input type="hidden" id="url_bensin" name="url_bensin" value="">
+                    <img id="bensin" src="" alt="Bensin" id="bensin" style="max-width: 100%; height: auto;">
+
+                    <input type="text" id="url_bensin" name="bensin" value="">
                     <input type="text" id="deskripsi" name="deskripsi" value="">
                     <button type="submit" name="submit" id="submit" class="btn btn-danger">Buat Pemeliharaan</button>
                 </form>
@@ -150,11 +150,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const kondisiModal = document.getElementById('kondisiModal');
 
     kondisiModal.addEventListener('show.bs.modal', function (event) {
-        const button = event.relatedTarget; // Button that triggered the modal
-        const kondisi = button.getAttribute('data-fisik'); 
+        const button = event.relatedTarget;
+        const kondisi = button.getAttribute('data-fisik');
         const bensin = button.getAttribute('data-bensin');
         const mobilId = button.getAttribute('data-id');
         const deskripsi = button.getAttribute('url-deskripsi');
+        const kondisi_fisik = button.getAttribute('url-fisik');
+        const url_bensin = button.getAttribute('url-bensin');
 
         // Elemen-elemen untuk gambar di modal
         const modalKondisiFisik = kondisiModal.querySelector('#kondisi_fisik');
@@ -171,6 +173,8 @@ document.addEventListener('DOMContentLoaded', function () {
         modalUrlFisik.value = kondisi;
         modalUrlBensin.value = bensin;
         modalDeskripsi.value = deskripsi;
+        modalUrlFisik.value = kondisi_fisik;
+        modalBensin.value = url_bensin;
         // Set mobil_id yang dipilih ke input hidden
         modalMobilId.value = mobilId;
     });

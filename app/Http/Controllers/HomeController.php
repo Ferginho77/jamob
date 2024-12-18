@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Mobil;
+use App\Models\Pemeliharaan;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use Illuminate\Support\Facades\Log; // Import Log
@@ -25,9 +26,9 @@ class HomeController extends Controller
     public function dashboard()
     {
         $pengembalians = Pengembalian::all();
-        
+
         $totalMobil = DB::table('mobil')->where('status', 'Ada')->count();
-        $totalPeminjam = DB::table('peminjaman')->count(); 
+        $totalPeminjam = DB::table('peminjaman')->count();
 
         return view('dashboard', compact('pengembalians'),
         [
@@ -45,8 +46,8 @@ class HomeController extends Controller
     }
     public function pemeliharaan()
     {
-        $data['mobils'] = Mobil::get(); // Mengambil mobil
-        return view('pemeliharaan', $data);
+       $pemeliharaans = Pemeliharaan::all();
+        return view('pemeliharaan', compact('pemeliharaans'));
     }
 
     public function index()

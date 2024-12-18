@@ -42,4 +42,5 @@ Route::post('/mobil-kembali/{peminjamanId}', [MobilController::class, 'returnMob
 Route::get('/mobil', [HomeController::class, 'mobil'])->middleware('auth')->name('mobil');
 
 //Route Untuk Pemeliharaan
-Route::post('pemeliharaan', [PemeliharaanController::class, 'create'])->name('create');
+Route::post('/pemeliharaan', [PemeliharaanController::class, 'create'])->name('pemeliharaan');
+
