@@ -34,9 +34,9 @@
             <span class="nav-link text-dark ms-auto me-2">{{ Auth::user()->username }}</span>
                 <form action="{{ route('logout') }}" method="POST" class="d-inline">
                     @csrf
-                <button type="submit" class="nav-link btn btn-link text-light bg-danger p-2" style="text-decoration: none;">Logout</button>
+                <button type="submit" onclick="return confirm('Apakah Anda Yakin Ingin Keluar Aplikasi?')" class="nav-link btn btn-link text-light bg-danger p-2" style="text-decoration: none;">Logout</button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav ms-auto">   
+                <div class="navbar-nav ms-auto">
                 </form>
                     @else
                         <!-- Jika user belum login, tampilkan tombol login -->

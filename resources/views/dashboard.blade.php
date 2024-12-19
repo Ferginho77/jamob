@@ -104,7 +104,8 @@
                                 url-fisik="{{ $x->kondisi_fisik }}"
                                 url-bensin="{{ $x->bensin }}"
                                 url-deskripsi="{{ $x->deskripsi }}"
-                                data-id="{{ $x->mobil_id }}">
+                                data-id="{{ $x->mobil_id }}"
+                                data-status="{{ $x->mobil->status }}">
                                 Cek Kondisi
                             </button>
                             </td>
@@ -155,6 +156,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const deskripsi = button.getAttribute('url-deskripsi');
         const kondisi_fisik = button.getAttribute('url-fisik');
         const url_bensin = button.getAttribute('url-bensin');
+        const status = button.getAttribute('data-status')
 
         const modalKondisiFisik = kondisiModal.querySelector('#kondisi_fisik');
         const modalBensin = kondisiModal.querySelector('#bensin');
@@ -162,30 +164,37 @@ document.addEventListener('DOMContentLoaded', function () {
         const modalUrlFisik = kondisiModal.querySelector('#url_fisik');
         const modalUrlBensin = kondisiModal.querySelector('#url_bensin');
         const modalDeskripsi = kondisiModal.querySelector('#deskripsi');
+        // const modalstatus = kondisiModal.querySelector('#status');
 
         modalKondisiFisik.src = kondisi;
         modalBensin.src = bensin;
-
         modalUrlFisik.value = kondisi_fisik;
         modalUrlBensin.value = url_bensin;
         modalDeskripsi.value = deskripsi;
         modalMobilId.value = mobilId;
+        // modalstatus.value = status;
+
+        if (status === 'Rusak') {
+            $('#pemeliharaan').prop('disabled', true);  // Disable the button
+        } else {
+            $('#pemeliharaan').prop('disabled', false);  // Enable the button
+        }
     });
 
-   
+
 });
 document.getElementById("pemeliharaan").onclick = function(event) {
-    event.preventDefault();  
+    event.preventDefault();
 
     var formData = new FormData(document.getElementById("form_pemeliharaan"));
-    
+
     fetch("{{ route('pemeliharaan') }}" ,{
-        method: 'POST', 
-        body: formData 
+        method: 'POST',
+        body: formData
     })
     .then(data => {
         Swal.fire({
-            title: "Berhasil membuat pemeliharaan!",
+            title: "Data Berhasil Dikirim!",
             icon: "success"
         });
     });
