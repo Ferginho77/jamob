@@ -16,10 +16,10 @@ class HomeController extends Controller
 {
     public function home()
     {
-        // Mengambil data mobil yang statusnya 'ada' dan data lain
+        
         $peminjamans = Peminjaman::where('user_id', auth()->id())
         ->with('mobil', 'user')
-        ->get(); // Mengambil mobil beserta user
+        ->get(); 
         return view('home', compact('peminjamans'));
     }
 
@@ -29,11 +29,13 @@ class HomeController extends Controller
 
         $totalMobil = DB::table('mobil')->where('status', 'Ada')->count();
         $totalPeminjam = DB::table('peminjaman')->count();
+        $totalPemeliharaan = DB::table('pemeliharaan')->count();
 
         return view('dashboard', compact('pengembalians'),
         [
             'totalMobil' => $totalMobil,
-            'totalPeminjam' => $totalPeminjam
+            'totalPeminjam' => $totalPeminjam,
+            'totalPemeliharaan' => $totalPemeliharaan
         ]);
 
     }
@@ -41,7 +43,7 @@ class HomeController extends Controller
 
     public function peminjaman()
     {
-        $data['mobils'] = Mobil::with('user')->get(); // Mengambil mobil beserta user
+        $data['mobils'] = Mobil::with('user')->get(); 
         return view('peminjaman', $data);
     }
     public function pemeliharaan()

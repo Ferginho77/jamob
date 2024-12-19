@@ -6,6 +6,8 @@
     <title>@yield('title', 'Judul Default')</title>
     <link rel="icon" href="/img/tirta.png">
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="stylesheet" href="sweetalert2.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -28,15 +30,14 @@
             <a href="/">
                 <img src="/img/logo-perumda-tr.png" alt="icon" style="max-width:100px;" class="ms-5">
             </a>
+            @if(Auth::check())
+            <span class="nav-link text-dark ms-auto me-2">{{ Auth::user()->username }}</span>
+                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                    @csrf
+                <button type="submit" class="nav-link btn btn-link text-light bg-danger p-2" style="text-decoration: none;">Logout</button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav ms-auto">
-                    @if(Auth::check())
-                        <!-- Jika user login, tampilkan nama user dan tombol logout -->
-                        <span class="nav-link text-dark">{{ Auth::user()->username }}</span>
-                        <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                            @csrf
-                            <button type="submit" class="nav-link btn btn-link text-light bg-danger" style="text-decoration: none;">Logout</button>
-                        </form>
+                <div class="navbar-nav ms-auto">   
+                </form>
                     @else
                         <!-- Jika user belum login, tampilkan tombol login -->
                         <a class="nav-link active text-dark" aria-current="page" href="/login">Login</a>
@@ -58,7 +59,7 @@
             © 2024
         </div>
     </footer>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
     <script src="{{ mix('js/app.js') }}" defer></script>
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"

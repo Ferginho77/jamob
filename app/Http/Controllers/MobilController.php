@@ -87,26 +87,25 @@ class MobilController extends Controller
         ]);
     
         DB::transaction(function () use ($request, $id) {
-            // Ambil data peminjaman
+          
             $peminjaman = Peminjaman::findOrFail($id);
     
-            // Simpan file kondisi terakhir mobil jika ada
             $kondisiMobilPath = null;
             $kondisiBensinPath = null;
         
             if ($request->hasFile('kondisi_fisik')) {
                 $file = $request->file('kondisi_fisik');
                 $kondisiMobilPath = time() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('img'), $kondisiMobilPath); // Move to public/img
+                $file->move(public_path('img'), $kondisiMobilPath); 
             }
         
             if ($request->hasFile('bensin')) {
                 $file = $request->file('bensin');
                 $kondisiBensinPath = time() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('img'), $kondisiBensinPath); // Move to public/img
+                $file->move(public_path('img'), $kondisiBensinPath); 
             }
     
-            // Pindahkan data ke tabel pengembalian
+        
             Pengembalian::create([
             'nama_mobil' => $request->nama_mobil,
             'plat_nomor' => $request->plat_nomor,
@@ -119,13 +118,12 @@ class MobilController extends Controller
             'user_id' => Auth::id(),
             ]);
     
-            // Ubah status mobil menjadi "Ada"
+          
             $mobil = Mobil::findOrFail($request->mobil_id);
             $mobil->update([
                 'status' => 'Ada',
             ]);
     
-            // Hapus data dari tabel peminjaman
             $peminjaman->delete();
         });
     return redirect('home')->withErrors('Mohon Aktifkan Lokasi Anda');

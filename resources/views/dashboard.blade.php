@@ -52,7 +52,7 @@
 
         <div class="col-xl-3 col-md-6">
             <div class="card bg-danger text-white mb-4">
-                <div class="card-body">0 Pemeliharaan</div>
+                <div class="card-body">Pemeliharaan : {{ $totalPemeliharaan }}</div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <a class="small text-white stretched-link" href="/pemeliharaan">View Details</a>
                     <div class="small text-white">
@@ -67,51 +67,52 @@
     </div>
 
     <div class="row">
-        <div class="col-xl-8 col-md-6">
+        <div class="col-xl-8 col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h2>Pengembalian</h2>
+                    <h2>Log Pengembalian</h2>
                 </div>
                 <div class="card-body">
-
-                <table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Mobil</th>
-            <th scope="col">Plat Nomor</th>
-            <th scope="col">Nama Peminjam</th>
-            <th scope="col">Deskripsi</th>
-            <th scope="col">Jam DiKembalikan</th>
-            <th scope="col">Kordinat Pengembalian</th>
-            <th scope="col">Kondisi</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($pengembalians as $x)
-            <tr>
-                <td>{{ $x->nama_mobil ?? 'N/A' }}</td>
-                <td>{{ $x->plat_nomor ?? 'N/A' }}</td>
-                <td>{{ $x->user->username ?? 'N/A' }}</td>
-                <td>{{ $x->deskripsi }}</td>
-                <td>{{ $x->created_at }}</td>
-                <td>{{ $x->location }}</td>
-                <td>
-                    <button type="button" class="btn btn-primary"
-                            data-bs-toggle="modal"
-                            data-bs-target="#kondisiModal"
-                            data-bensin="{{ asset('img/' . $x->bensin) }}"
-                            data-fisik="{{ asset('img/' . $x->kondisi_fisik ) }}"
-                            url-fisik="${{ $x->kondisi_fisik }}"
-                            url-bensin="{{ $x->bensin }}"
-                            url-deskripsi="{{ $x->deskripsi }}"
-                            data-id="{{ $x->mobil_id }}">
-                        Cek Kondisi
-                    </button>
-                </td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Mobil</th>
+                        <th scope="col">Plat Nomor</th>
+                        <th scope="col">Nama Peminjam</th>
+                        <th scope="col">Deskripsi</th>
+                        <th scope="col">Jam DiKembalikan</th>
+                        <th scope="col">Kordinat Pengembalian</th>
+                        <th scope="col">Kondisi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($pengembalians as $x)
+                        <tr>
+                            <td>{{ $x->nama_mobil  }}</td>
+                            <td>{{ $x->plat_nomor  }}</td>
+                            <td>{{ $x->user->username  }}</td>
+                            <td>{{ $x->deskripsi }}</td>
+                            <td>{{ $x->created_at }}</td>
+                            <td><a href="https://www.google.com/maps?q={{ $x->location }}" target="_blank">Lihat Lokasi</a></td>
+                            <td>
+                            <button type="button" class="btn btn-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#kondisiModal"
+                                data-bensin="{{ asset('img/' . $x->bensin) }}"
+                                data-fisik="{{ asset('img/' . $x->kondisi_fisik ) }}"
+                                url-fisik="{{ $x->kondisi_fisik }}"
+                                url-bensin="{{ $x->bensin }}"
+                                url-deskripsi="{{ $x->deskripsi }}"
+                                data-id="{{ $x->mobil_id }}">
+                                Cek Kondisi
+                            </button>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
 
 <!-- Modal Structure (Place this outside the loop) -->
 <div class="modal fade" id="kondisiModal" tabindex="-1" aria-labelledby="mobilModalLabel" aria-hidden="true">
@@ -122,22 +123,19 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- Form untuk pemeliharaan -->
-                <form action="{{ route('pemeliharaan') }}" method="POST">
+                <form id="form_pemeliharaan" action="{{ route('pemeliharaan') }}" method="POST">
                     @csrf
-                    <input type="text" id="mobil_id" name="mobil_id" value="">
+                    <input type="hidden" id="mobil_id" name="mobil_id" value="">
 
                     <h4>Kondisi Fisik</h4>
                     <img id="kondisi_fisik" src="" alt="Fisik" style="max-width: 100%; height: auto;">
-
-                    <input type="text" id="url_fisik" name="kondisi_fisik" value="">
+                    <input type="hidden" id="url_fisik" name="kondisi_fisik" value="">
 
                     <h4>Kondisi Bensin</h4>
-                    <img id="bensin" src="" alt="Bensin" id="bensin" style="max-width: 100%; height: auto;">
-
-                    <input type="text" id="url_bensin" name="bensin" value="">
-                    <input type="text" id="deskripsi" name="deskripsi" value="">
-                    <button type="submit" name="submit" id="submit" class="btn btn-danger">Buat Pemeliharaan</button>
+                    <img id="bensin" src="" alt="Bensin" style="max-width: 100%; height: auto;">
+                    <input type="hidden" id="url_bensin" name="bensin" value="">
+                    <input type="hidden" id="deskripsi" name="deskripsi" value="">
+                    <button type="submit" name="submit" id="pemeliharaan" class="btn btn-danger">Buat Pemeliharaan</button>
                 </form>
             </div>
         </div>
@@ -158,27 +156,40 @@ document.addEventListener('DOMContentLoaded', function () {
         const kondisi_fisik = button.getAttribute('url-fisik');
         const url_bensin = button.getAttribute('url-bensin');
 
-        // Elemen-elemen untuk gambar di modal
         const modalKondisiFisik = kondisiModal.querySelector('#kondisi_fisik');
         const modalBensin = kondisiModal.querySelector('#bensin');
         const modalMobilId = kondisiModal.querySelector('#mobil_id');
         const modalUrlFisik = kondisiModal.querySelector('#url_fisik');
         const modalUrlBensin = kondisiModal.querySelector('#url_bensin');
         const modalDeskripsi = kondisiModal.querySelector('#deskripsi');
-        // Update gambar di modal
+
         modalKondisiFisik.src = kondisi;
         modalBensin.src = bensin;
 
-        // Set input hidden URL gambar
-        modalUrlFisik.value = kondisi;
-        modalUrlBensin.value = bensin;
-        modalDeskripsi.value = deskripsi;
         modalUrlFisik.value = kondisi_fisik;
-        modalBensin.value = url_bensin;
-        // Set mobil_id yang dipilih ke input hidden
+        modalUrlBensin.value = url_bensin;
+        modalDeskripsi.value = deskripsi;
         modalMobilId.value = mobilId;
     });
+
+   
 });
+document.getElementById("pemeliharaan").onclick = function(event) {
+    event.preventDefault();  
+
+    var formData = new FormData(document.getElementById("form_pemeliharaan"));
+    
+    fetch("{{ route('pemeliharaan') }}" ,{
+        method: 'POST', 
+        body: formData 
+    })
+    .then(data => {
+        Swal.fire({
+            title: "Berhasil membuat pemeliharaan!",
+            icon: "success"
+        });
+    });
+};
 </script>
 
 @endsection
