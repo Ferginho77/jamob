@@ -43,4 +43,4 @@ Route::get('/mobil', [HomeController::class, 'mobil'])->middleware('auth')->name
 
 //Route Untuk Pemeliharaan
 Route::post('/pemeliharaan', [PemeliharaanController::class, 'create'])->name('pemeliharaan');
-Route::post('/mobil/ubah-status', [MobilController::class, 'selesaikan'])->name('mobil.selesaikan');
+Route::post('/selesaikan', [PemeliharaanController::class, 'selesaikan'])->name('selesaikan');

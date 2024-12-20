@@ -73,47 +73,48 @@
                     <h2>Log Pengembalian</h2>
                 </div>
                 <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th scope="col">Mobil</th>
-                        <th scope="col">Plat Nomor</th>
-                        <th scope="col">Nama Peminjam</th>
-                        <th scope="col">Deskripsi</th>
-                        <th scope="col">Jam DiKembalikan</th>
-                        <th scope="col">Kordinat Pengembalian</th>
-                        <th scope="col">Kondisi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($pengembalians as $x)
-                        <tr>
-                            <td>{{ $x->nama_mobil  }}</td>
-                            <td>{{ $x->plat_nomor  }}</td>
-                            <td>{{ $x->user->username  }}</td>
-                            <td>{{ $x->deskripsi }}</td>
-                            <td>{{ $x->created_at }}</td>
-                            <td><a href="https://www.google.com/maps?q={{ $x->location }}" target="_blank">Lihat Lokasi</a></td>
-                            <td>
-                            <button type="button" class="btn btn-primary"
-                                data-bs-toggle="modal"
-                                data-bs-target="#kondisiModal"
-                                data-bensin="{{ asset('img/' . $x->bensin) }}"
-                                data-fisik="{{ asset('img/' . $x->kondisi_fisik ) }}"
-                                url-fisik="{{ $x->kondisi_fisik }}"
-                                url-bensin="{{ $x->bensin }}"
-                                url-deskripsi="{{ $x->deskripsi }}"
-                                data-id="{{ $x->mobil_id }}"
-                                data-status="{{ $x->mobil->status }}">
-                                Cek Kondisi
-                            </button>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                <div id="table-container" class="table-responsive table-scroll" style="max-height: 550px;">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Mobil</th>
+                                <th scope="col">Plat Nomor</th>
+                                <th scope="col">Nama Peminjam</th>
+                                <th scope="col">Deskripsi</th>
+                                <th scope="col">Jam Dikembalikan</th>
+                                <th scope="col">Kordinat Pengembalian</th>
+                                <th scope="col">Kondisi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($pengembalians as $x)
+                                <tr>
+                                    <td>{{ $x->nama_mobil }}</td>
+                                    <td>{{ $x->plat_nomor }}</td>
+                                    <td>{{ $x->user->username }}</td>
+                                    <td>{{ $x->deskripsi }}</td>
+                                    <td>{{ $x->created_at }}</td>
+                                    <td><a href="https://www.google.com/maps?q={{ $x->location }}" target="_blank">Lihat Lokasi</a></td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#kondisiModal"
+                                            data-bensin="{{ asset('img/' . $x->bensin) }}"
+                                            data-fisik="{{ asset('img/' . $x->kondisi_fisik ) }}"
+                                            url-fisik="{{ $x->kondisi_fisik }}"
+                                            url-bensin="{{ $x->bensin }}"
+                                            url-deskripsi="{{ $x->deskripsi }}"
+                                            data-id="{{ $x->mobil_id }}"
+                                            data-status="{{ $x->mobil->status }}">
+                                            Cek Kondisi
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
 
 <!-- Modal Structure (Place this outside the loop) -->
 <div class="modal fade" id="kondisiModal" tabindex="-1" aria-labelledby="mobilModalLabel" aria-hidden="true">
@@ -136,7 +137,7 @@
                     <img id="bensin" src="" alt="Bensin" style="max-width: 100%; height: auto;">
                     <input type="hidden" id="url_bensin" name="bensin" value="">
                     <input type="hidden" id="deskripsi" name="deskripsi" value="">
-                    <button type="submit" name="submit" id="pemeliharaan" class="btn btn-danger">Buat Pemeliharaan</button>
+                    <button type="submit" name="submit" id="pemeliharaan" class="btn btn-danger mt-2">Buat Pemeliharaan</button>
                 </form>
             </div>
         </div>
@@ -174,31 +175,37 @@ document.addEventListener('DOMContentLoaded', function () {
         modalMobilId.value = mobilId;
         // modalstatus.value = status;
 
+        const pemeliharaanButton = document.getElementById('pemeliharaan');
+
         if (status === 'Rusak') {
-            $('#pemeliharaan').prop('disabled', true);  // Disable the button
+            pemeliharaanButton.disabled = true;
+            pemeliharaanButton.innerText = "Mobil Sedang Di Perbaiki";
         } else {
-            $('#pemeliharaan').prop('disabled', false);  // Enable the button
+            pemeliharaanButton.disabled = false;
         }
     });
 
 
 });
-document.getElementById("pemeliharaan").onclick = function(event) {
-    event.preventDefault();
+    document.getElementById("pemeliharaan").onclick = function(event) {
+        event.preventDefault();
 
-    var formData = new FormData(document.getElementById("form_pemeliharaan"));
+        var formData = new FormData(document.getElementById("form_pemeliharaan"));
 
-    fetch("{{ route('pemeliharaan') }}" ,{
-        method: 'POST',
-        body: formData
-    })
-    .then(data => {
-        Swal.fire({
-            title: "Data Berhasil Dikirim!",
-            icon: "success"
-        });
-    });
-};
+        fetch("{{ route('pemeliharaan') }}" ,{
+            method: 'POST',
+            body: formData
+        })
+        .then(data => {
+            Swal.fire({
+                title: "Data Berhasil Dikirim!",
+                icon: "success"
+            });
+            setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+            });
+        };
 </script>
 
 @endsection

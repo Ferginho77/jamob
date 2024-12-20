@@ -1,1 +1,12 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
+
+.table-scroll {
+    overflow-y: auto;
+    max-height: 300px; /* Set a fixed height for the table container */
+}
+
+.table-scroll table {
+    width: 100%;
+    table-layout: fixed;
+}
+

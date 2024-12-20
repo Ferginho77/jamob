@@ -10,7 +10,8 @@
         <h2 class="text-center">DATA PEMELIHARAAN MOBIL</h2>
         <div class="card">
             <div class="card-body">
-                <table class="table">
+                <div class="table-responsive">
+                <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <td>Kondisi Fisik</td>
@@ -30,49 +31,53 @@
                                 <td>{{ $x->deskripsi }}</td>
                                 <td class="status">{{ $x->mobil->status }}</td>
                                 <td>{{ $x->mobil->nama_mobil }}</td>
-                                <td> <button class="btn btn-success btn-ubah-status" data-id="{{ $x->mobil->id }}" type="button">Ubah ke Ada</button></td>
+                                <td> <button class="btn btn-success btn-ubah-status" data-id="{{ $x->mobil->id }}" type="button">Selesaikan</button></td>
                             </tr>
                         @endif
                         @endforeach
                     </tbody>
 
                 </table>
+                </div>
             </div>
         </div>
     </div>
 @endsection
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const buttons = document.querySelectorAll('.btn-ubah-status');
+   document.addEventListener('DOMContentLoaded', function () {
+    const buttons = document.querySelectorAll('.btn-ubah-status');
+    const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+    const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : null;
 
-        buttons.forEach(button => {
-            button.addEventListener('click', function () {
-                const mobilId = this.getAttribute('data-id');
+    if (!csrfToken) {
+        console.error('CSRF token not found in meta tag!');
+        return;
+    }
 
-                fetch("{{ route('mobil.selesaikan') }}", {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ mobil_id: mobilId })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const row = this.closest('tr');
-                        const statusCell = row.querySelector('.status');
+    buttons.forEach(button => {
+        button.addEventListener('click', function () {
+            const mobilId = this.getAttribute('data-id');
 
-                        // Perbarui status di tampilan
-                        statusCell.textContent = 'Ada';
-
-                        // Nonaktifkan tombol setelah perubahan
-                        this.disabled = true;
-                        this.textContent = 'Status Diubah';
-                    }
-                })
-                .catch(error => console.error('Error:', error));
+            fetch("{{ route('selesaikan') }}", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: JSON.stringify({ mobil_id: mobilId })
+            })
+            .then(data => {
+                Swal.fire({
+                    title: "Data Berhasil Dikirim!",
+                    icon: "success"
+                });
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             });
         });
     });
+});
+
+
 </script>

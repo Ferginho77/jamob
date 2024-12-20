@@ -6,8 +6,9 @@
     <title>@yield('title', 'Judul Default')</title>
     <link rel="icon" href="/img/tirta.png">
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-    <link rel="stylesheet" href="sweetalert2.min.css">
+    <!-- <link rel="stylesheet" href="sweetalert2.min.css"> -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css" rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
     <header>
@@ -34,12 +35,11 @@
             <span class="nav-link text-dark ms-auto me-2">{{ Auth::user()->username }}</span>
                 <form action="{{ route('logout') }}" method="POST" class="d-inline">
                     @csrf
-                <button type="submit" onclick="return confirm('Apakah Anda Yakin Ingin Keluar Aplikasi?')" class="nav-link btn btn-link text-light bg-danger p-2" style="text-decoration: none;">Logout</button>
+                <button type="submit" onclick="return confirm('Ente Yakin Mau Keluar Aplikasi?')" class="nav-link btn btn-link text-light bg-danger p-2" style="text-decoration: none;">Logout</button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav ms-auto">
                 </form>
                     @else
-                        <!-- Jika user belum login, tampilkan tombol login -->
                         <a class="nav-link active text-dark" aria-current="page" href="/login">Login</a>
                     @endif
                 </div>

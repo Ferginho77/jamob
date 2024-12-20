@@ -38,25 +38,16 @@ class PemeliharaanController extends Controller
 }
 
 public function selesaikan(Request $request){
-       // Validasi input
        $request->validate([
-        'mobil_id' => 'required|exists:mobils,id', // Pastikan ID mobil valid
+        'mobil_id' => 'required|exists:mobil,id',
     ]);
 
-    // Temukan mobil berdasarkan ID
-    $mobil = Mobil::findOrFail($request->mobil_id);
+    Mobil::where('id', $request->mobil_id)
+        ->update(['status' => 'Ada']);
 
-    // Perbarui status menjadi 'Ada'
-    if ($mobil->status === 'Rusak') {
-        $mobil->update(['status' => 'Ada']);
+    Pemeliharaan::where('mobil_id', $request->mobil_id)->delete();
+    return redirect()->back();
+
     }
-
-    // Redirect dengan pesan sukses
-    return response()->json([
-        'success' => true,
-        'message' => 'Status berhasil diubah menjadi Ada.',
-    ]);
-
-}
 
 }
