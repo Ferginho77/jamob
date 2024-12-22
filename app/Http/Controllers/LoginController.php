@@ -20,7 +20,7 @@ class LoginController extends Controller
 
     public function login(Request $request)
 {
-    // Validasi input
+
     $request->validate([
         'username' => 'required',
         'password' => 'required',
@@ -29,13 +29,12 @@ class LoginController extends Controller
         'password.required' => 'Password Wajib Diisi.',
     ]);
 
-    // Cek kredensial menggunakan Auth::attempt
     $credentials = $request->only('username', 'password');
 
     if (Auth::attempt($credentials)) {
-        $user = Auth::user(); // Ambil pengguna yang login
+        $user = Auth::user();
 
-        // Redirect berdasarkan role pengguna
+
         if ($user->role == 'admin') {
             return redirect()->route('dashboard');
         } elseif ($user->role == 'karyawan') {
@@ -44,7 +43,6 @@ class LoginController extends Controller
             return redirect('/')->withErrors('Role tidak valid.')->withInput();
         }
     } else {
-        // Kredensial salah
         return redirect('/')
             ->withErrors('Username atau Password salah.')
             ->withInput();
@@ -53,7 +51,7 @@ class LoginController extends Controller
 
        public function logout(Request $request)
     {
-        Auth::logout(); 
+        Auth::logout();
         return redirect('');
     }
 

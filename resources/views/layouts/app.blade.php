@@ -12,20 +12,6 @@
 </head>
 <body>
     <header>
-            <!-- <nav class="navbar bg-primary">
-                <div class="container-fluid">
-                    <span class="navbar-brand mb-0 h1">
-                        <img src="/img/tirta.png" alt="icon" style="max-width:50px;" class="ms-5">
-                    </span>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav ms-auto text-light">
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Home</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-        </nav> -->
         <nav class="navbar navbar-expand-lg bg-secondary-subtle">
         <div class="container-fluid">
             <a href="/">

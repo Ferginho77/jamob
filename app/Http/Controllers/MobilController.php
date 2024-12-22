@@ -46,9 +46,8 @@ class MobilController extends Controller
             'wilayah' => 'required|string',
         ]);
     
-        // Simpan data ke database
         Peminjaman::create($validated);
-    
+
         return redirect()->back()->with('success', 'Peminjaman berhasil disimpan');
     }
 
@@ -56,15 +55,15 @@ class MobilController extends Controller
     {
         // Menggunakan query builder Laravel untuk menghitung jumlah data
         $totalMobil = DB::table('mobil')->where('status', 'Ada')->count();
-        $totalPeminjam = DB::table('peminjaman')->count(); 
-        
+        $totalPeminjam = DB::table('peminjaman')->count();
+
         // Mengirimkan data ke view
         return view('dashboard', [
             'totalMobil' => $totalMobil,
             'totalPeminjam' => $totalPeminjam
         ]);
     }
-    
+
 
     /**
      * Display the specified resource.
@@ -85,27 +84,27 @@ class MobilController extends Controller
             'location' => 'required|nullable|string',
             'mobil_id' => 'required|exists:mobil,id',
         ]);
-    
+
         DB::transaction(function () use ($request, $id) {
-          
+
             $peminjaman = Peminjaman::findOrFail($id);
-    
+
             $kondisiMobilPath = null;
             $kondisiBensinPath = null;
-        
+
             if ($request->hasFile('kondisi_fisik')) {
                 $file = $request->file('kondisi_fisik');
                 $kondisiMobilPath = time() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('img'), $kondisiMobilPath); 
+                $file->move(public_path('img'), $kondisiMobilPath);
             }
-        
+
             if ($request->hasFile('bensin')) {
                 $file = $request->file('bensin');
                 $kondisiBensinPath = time() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('img'), $kondisiBensinPath); 
+                $file->move(public_path('img'), $kondisiBensinPath);
             }
-    
-        
+
+
             Pengembalian::create([
             'nama_mobil' => $request->nama_mobil,
             'plat_nomor' => $request->plat_nomor,
@@ -117,13 +116,13 @@ class MobilController extends Controller
             'mobil_id' => $request->mobil_id,
             'user_id' => Auth::id(),
             ]);
-    
-          
+
+
             $mobil = Mobil::findOrFail($request->mobil_id);
             $mobil->update([
                 'status' => 'Ada',
             ]);
-    
+
             $peminjaman->delete();
         });
     return redirect('home')->withErrors('Mohon Aktifkan Lokasi Anda');

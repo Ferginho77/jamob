@@ -12,19 +12,19 @@
         @foreach ($mobils as $x)
             @if ($x->status == 'Ada')
             <div class="col-md-3 mb-4">
-                <div class="card h-100"> <!-- Added h-100 class for full height -->
+                <div class="card h-100">
                     <img src="{{ asset('img/' . $x->gambar) }}" class="card-img-top img-fluid pt-3" alt="Mobil Image">
-                    <div class="card-body d-flex flex-column"> <!-- Use flexbox to align items -->
+                    <div class="card-body d-flex flex-column"> 
                         <h5 class="card-title">{{ $x->nama_mobil }}</h5>
                         <p class="card-text">{{ $x->plat_nomor }}</p>
                         <p class="card-text">Warna: {{ $x->warna }}</p>
-                        <p class="card-text">Status: 
+                        <p class="card-text">Status:
                             <span class="text-success">{{ $x->status }}</span>
                         </p>
                     </div>
                 </div>
             </div>
-            @endif 
+            @endif
         @endforeach
     </div>
 </div>

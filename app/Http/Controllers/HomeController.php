@@ -6,20 +6,18 @@ use Illuminate\Http\Request;
 use App\Models\Mobil;
 use App\Models\Pemeliharaan;
 use Illuminate\Support\Facades\DB;
-use App\Models\User;
-use Illuminate\Support\Facades\Log; // Import Log
+use Illuminate\Support\Facades\Log;
 use App\Models\Peminjaman;
 use App\Models\Pengembalian;
-use App\Models\Wilayah;
 
 class HomeController extends Controller
 {
     public function home()
     {
-        
+
         $peminjamans = Peminjaman::where('user_id', auth()->id())
         ->with('mobil', 'user')
-        ->get(); 
+        ->get();
         return view('home', compact('peminjamans'));
     }
 
@@ -43,7 +41,7 @@ class HomeController extends Controller
 
     public function peminjaman()
     {
-        $data['mobils'] = Mobil::with('user')->get(); 
+        $data['mobils'] = Mobil::with('user')->get();
         return view('peminjaman', $data);
     }
     public function pemeliharaan()
@@ -51,19 +49,9 @@ class HomeController extends Controller
        $pemeliharaans = Pemeliharaan::all();
         return view('pemeliharaan', compact('pemeliharaans'));
     }
-
-    public function index()
-    {
-        // Mengambil data yang diurutkan berdasarkan kantor_wilayah
-        $data = Wilayah::orderBy('kantor_wilayah', 'asc')->get();
-
-        // Mengirimkan data ke view home.blade.php
-        return view('home', compact('data'));
-    }
-
     public function mobil()
     {
-        $data['mobils'] = Mobil::with('user')->get(); // Mengambil mobil beserta user
+        $data['mobils'] = Mobil::with('user')->get();
         return view('mobil', $data);
     }
 

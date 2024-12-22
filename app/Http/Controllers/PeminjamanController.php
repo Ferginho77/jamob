@@ -42,9 +42,8 @@ class PeminjamanController extends Controller
 
      public function pinjam()
      {
-         // Ambil data hanya dari tabel peminjaman
-         $peminjamans = Peminjaman::with(['mobil', 'user'])->get(); // Include user data in the query
-        
+         $peminjamans = Peminjaman::with(['mobil', 'user'])->get();
+
         return view('/', compact('peminjamans'));
      }
 

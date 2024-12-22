@@ -10,7 +10,7 @@
         <img src="/img/car0.png" class="img-fluid" alt="Mobil Image">
         <div class="text-black"><h1>PENGEMBALIAN MOBIL</h1></div>
     </div>
-    
+
     <div class="card">
     @if ($peminjamans->isEmpty())
         <div class="card-header" role="alert">
@@ -20,8 +20,8 @@
         <div class="row position-relative">
             @foreach ($peminjamans as $peminjaman)
                 <div class="col-md-6 p-4">
-                    <div class="mb-2 position-relative top-50 start-50 translate-middle">     
-                        <div class="text-center"> <!-- Tambahkan div ini untuk men-center gambar -->
+                    <div class="mb-2 position-relative top-50 start-50 translate-middle">
+                        <div class="text-center"> 
                             <img src="{{ asset('img/' . $peminjaman->mobil->gambar) }}" class="card-img-top img-fluid pt-3" alt="{{ $peminjaman->mobil->nama_mobil }}">
                         </div>
                         <div class="card-body">
@@ -29,13 +29,13 @@
                             <p class="card-text">Nama Peminjam : {{ $peminjaman->user->username }}</p>
                             <p class="card-text">Tanggal Pinjam: {{ $peminjaman->tanggal_peminjaman }}</p>
                             <p class="card-text">Tujuan: {{ $peminjaman->tujuan }}</p>
-                            
+
                             @if (Auth::check() && Auth::user()->id === $peminjaman->user_id)
-                                <button type="button" class="btn btn-primary" 
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#mobilModal" 
+                                <button type="button" class="btn btn-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#mobilModal"
                                     data-id="{{ $peminjaman->mobil_id }}"
-                                    data-nama="{{ $peminjaman->mobil->nama_mobil }}" 
+                                    data-nama="{{ $peminjaman->mobil->nama_mobil }}"
                                     data-plat="{{ $peminjaman->mobil->plat_nomor }}"
                                     >
                                     Kembalikan
@@ -89,7 +89,7 @@
                         </div>
                         <button type="submit" name="submit" id="submit" class="btn btn-primary">Kembalikan Mobil</button>
                     </form>
-                @endforeach     
+                @endforeach
                 </div>
             </div>
         </div>

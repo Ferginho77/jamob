@@ -4,8 +4,8 @@
 
 @section('content')
 <main>
-    <div class="d-flex justify-content-center align-items-center vh-100 position-relative"> <!-- Added position-relative for centering -->
-        <div class="card shadow-lg border-0 rounded-lg p-4 p-lg-5 " style=" position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"> <!-- Centered card -->
+    <div class="d-flex justify-content-center align-items-center vh-100 position-relative">
+        <div class="card shadow-lg border-0 rounded-lg p-4 p-lg-5 " style=" position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"> 
             <div class="row">
                 <div class="col-md-12">
                     <div class="card-body d-flex align-items-center">
