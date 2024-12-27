@@ -20,36 +20,6 @@ class MobilController extends Controller
         return view('mobil.index', compact('mobils'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function tambah()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'user_id' => 'required|integer',
-            'mobil_id' => 'required|integer',
-            'tanggal_pinjam' => 'required|date',
-            'tanggal_pengembalian' => 'required|date',
-            'wilayah' => 'required|string',
-        ]);
-    
-        Peminjaman::create($validated);
-
-        return redirect()->back()->with('success', 'Peminjaman berhasil disimpan');
-    }
 
     public function hitung()
     {
@@ -65,12 +35,6 @@ class MobilController extends Controller
     }
 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function returnMobil(Request $request, $id)
     {
 
@@ -127,37 +91,48 @@ class MobilController extends Controller
         });
     return redirect('home')->withErrors('Mohon Aktifkan Lokasi Anda');
     }
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+
+    public function TambahMobil(Request $request)
     {
-        //
+        $request->validate([
+            'nama_mobil' => 'required|string|max:255',
+            'plat_nomor' => 'required|string|max:255',
+            'warna' => 'required|string|max:255',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        DB::transaction(function () use ($request) {
+            $gambar = null;
+
+            if ($request->hasFile('gambar')) {
+                $file = $request->file('gambar');
+                $gambar = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('img'), $gambar);
+            }
+
+            Mobil::create([
+                'nama_mobil' => $request->nama_mobil,
+                'plat_nomor' => $request->plat_nomor,
+                'warna' => $request->warna,
+                'gambar' => $gambar,
+                'status' => 'Ada',
+            ]);
+        });
+
+        return redirect('mobil')->with('success', 'Data mobil berhasil ditambahkan.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function nonaktif(Request $request)
     {
-        //
+        $mobil = Mobil::findOrFail($request->mobil_id);
+        $mobil->status = $mobil->status === 'Ada' ? 'NonAktif' : 'Ada';
+        $mobil->save();
+
+        return response()->json([
+            'success' => true,
+            'new_status' => $mobil->status,
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+
 }

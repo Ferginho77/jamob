@@ -10,12 +10,10 @@ class Pemeliharaan extends Model
     use HasFactory;
     protected $table = 'pemeliharaan';
     protected $fillable = [
-        'kondisi_fisik',
-        'bensin',
         'deskripsi',
         'mobil_id',
         'created_at',
-        'updated_at', 
+        'updated_at',
     ];
     public function mobil()
     {
