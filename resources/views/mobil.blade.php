@@ -71,6 +71,7 @@
                         <div class="mb-3">
                             <label for="">Foto Mobil</label>
                             <input class="form-control" type="file" id="gambar" name="gambar" accept="image/*">
+                            <span>*foto minimal berukuran 300x192</span>
                         </div>
                         <button type="submit" name="submit" class="btn btn-success">Kirim Data</button>
                     </form>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'PDAM TIRTA RAHARJA')
+@section('title', 'Pemeliharaan | PDAM TIRTA RAHARJA')
 
 @section('content')
 
