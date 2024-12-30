@@ -15,7 +15,9 @@ class Peminjaman extends Model
     protected $fillable = [
         'user_id',
         'mobil_id',
+        'nomor_sppd',
         'tanggal_peminjaman',
+        'deskripsi',
         'tujuan',
         'created_at',
         'updated_at',

@@ -6,6 +6,7 @@ use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MobilController;
 use App\Http\Controllers\PemeliharaanController;
+use App\Http\Controllers\PermintaanController;
 use GuzzleHttp\Middleware;
 
 // Route utama
@@ -32,9 +33,14 @@ Route::get('/peminjaman/home', [PeminjamanController::class, 'pinjam'])->name('p
 
 // Route untuk permintaan
 Route::get('/permintaan', [HomeController::class, 'permintaan'])->name('permintaan')->middleware('auth');
+Route::post('/create-permintaan', [PermintaanController::class, 'create'])->middleware('auth')->name('create.permintaan');
+Route::post('/permintaan/approve/{id}', [PermintaanController::class, 'approve'])->name('permintaan.approve');
+Route::delete('/permintaan/delete/{id}', [PermintaanController::class, 'delete'])->name('permintaan.delete');
 
 // Roure untuk pemeliharaan
 Route::get('/pemeliharaan', [HomeController::class, 'pemeliharaan'])->name('pemeliharaan')->middleware('auth');
+Route::post('/pemeliharaan', [PemeliharaanController::class, 'create'])->middleware('auth')->name('pemeliharaan');
+Route::post('/selesaikan', [PemeliharaanController::class, 'selesaikan'])->name('selesaikan');
 
 // Route untuk pengembalian mobil
 Route::post('/mobil-kembali/{peminjamanId}', [MobilController::class, 'returnMobil'])->name('mobil.kembali');
@@ -43,9 +49,3 @@ Route::post('/mobil-kembali/{peminjamanId}', [MobilController::class, 'returnMob
 Route::get('/mobil', [HomeController::class, 'mobil'])->middleware('auth')->name('mobil');
 Route::post('/tambah-mobil', [MobilController::class, 'TambahMobil'])->middleware('auth')->name('tambah.mobil');
 Route::post('/nonaktif', [MobilController::class, 'nonaktif'])->middleware('auth')->name('nonaktif');
-
-
-//Route Untuk Pemeliharaan
-Route::post('/pemeliharaan', [PemeliharaanController::class, 'create'])->middleware('auth')->name('pemeliharaan');
-
-Route::post('/selesaikan', [PemeliharaanController::class, 'selesaikan'])->name('selesaikan');

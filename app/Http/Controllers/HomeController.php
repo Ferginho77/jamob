@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permintaan;
 use Illuminate\Http\Request;
 use App\Models\Mobil;
 use App\Models\Pemeliharaan;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\Peminjaman;
 use App\Models\Pengembalian;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -38,7 +40,6 @@ class HomeController extends Controller
 
     }
 
-
     public function peminjaman()
     {
         $data['mobils'] = Mobil::with('user')->get();
@@ -55,7 +56,12 @@ class HomeController extends Controller
         return view('mobil', $data);
     }
 
-    public function permintaan(){
-        return view('permintaan');
+    public function permintaan()
+    {
+        $users = User::all();
+        $mobils = Mobil::all();
+        $permintaans = Permintaan::with('user')->get();
+        return view('permintaan', compact('users', 'mobils', 'permintaans'));
     }
+
 }
