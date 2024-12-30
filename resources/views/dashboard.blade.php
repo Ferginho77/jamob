@@ -115,8 +115,6 @@
                     </table>
                 </div>
 
-
-<!-- Modal Structure (Place this outside the loop) -->
 <div class="modal fade" id="kondisiModal" tabindex="-1" aria-labelledby="mobilModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -134,6 +132,8 @@
                     <input type="hidden" id="url_fisik" name="kondisi_fisik" value="">
 
                     <h4>Kondisi Bensin</h4>
+                    <h4>Deskripsi :</h4>
+                    <h6 id="deskripsi"></h6>
                     <img id="bensin" src="" alt="Bensin" style="max-width: 100%; height: auto;">
                     <input type="hidden" id="url_bensin" name="bensin" value="">
                     <input type="hidden" id="deskripsi" name="deskripsi" value="">
@@ -157,23 +157,23 @@ document.addEventListener('DOMContentLoaded', function () {
         const deskripsi = button.getAttribute('url-deskripsi');
         const kondisi_fisik = button.getAttribute('url-fisik');
         const url_bensin = button.getAttribute('url-bensin');
-        const status = button.getAttribute('data-status')
+        const status = button.getAttribute('data-status');
 
         const modalKondisiFisik = kondisiModal.querySelector('#kondisi_fisik');
         const modalBensin = kondisiModal.querySelector('#bensin');
         const modalMobilId = kondisiModal.querySelector('#mobil_id');
         const modalUrlFisik = kondisiModal.querySelector('#url_fisik');
         const modalUrlBensin = kondisiModal.querySelector('#url_bensin');
-        const modalDeskripsi = kondisiModal.querySelector('#deskripsi');
-        // const modalstatus = kondisiModal.querySelector('#status');
+        const modalDeskripsi = kondisiModal.querySelector('#deskripsi'); 
 
         modalKondisiFisik.src = kondisi;
         modalBensin.src = bensin;
         modalUrlFisik.value = kondisi_fisik;
         modalUrlBensin.value = url_bensin;
-        modalDeskripsi.value = deskripsi;
         modalMobilId.value = mobilId;
-        // modalstatus.value = status;
+        
+       
+        modalDeskripsi.innerText = deskripsi; 
 
         const pemeliharaanButton = document.getElementById('pemeliharaan');
 
