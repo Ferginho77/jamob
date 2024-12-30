@@ -1,0 +1,9 @@
+•Tambah page pengelolaan
+• Buat dummy permintaan
+• Nomor sppd,nama pegawai yang di ambil data user,Deskripsi kegiatan
+•Fitur tambah kendaraan sampai pengelolaan dalam satu page yang sama
+
+PENAMBAHAN
+Kolom NonAktif dalam status
+Fitur tambah mobil
+pengubahan status jadi NonAktif

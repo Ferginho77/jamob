@@ -10,11 +10,6 @@ use App\Models\Mobil;
 
 class PeminjamanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $peminjamans = Peminjaman::where('user_id', auth()->id())
@@ -25,19 +20,6 @@ class PeminjamanController extends Controller
     return view('home', compact('peminjamans'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
 
 
      public function pinjam()

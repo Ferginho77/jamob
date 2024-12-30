@@ -6,6 +6,7 @@ use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MobilController;
 use App\Http\Controllers\PemeliharaanController;
+use GuzzleHttp\Middleware;
 
 // Route utama
 Route::get('/', [LoginController::class, 'index'])->name('login')->middleware('guest');
@@ -40,7 +41,11 @@ Route::post('/mobil-kembali/{peminjamanId}', [MobilController::class, 'returnMob
 
 // Route untuk daftar mobil
 Route::get('/mobil', [HomeController::class, 'mobil'])->middleware('auth')->name('mobil');
+Route::post('/tambah-mobil', [MobilController::class, 'TambahMobil'])->middleware('auth')->name('tambah.mobil');
+Route::post('/nonaktif', [MobilController::class, 'nonaktif'])->middleware('auth')->name('nonaktif');
+
 
 //Route Untuk Pemeliharaan
-Route::post('/pemeliharaan', [PemeliharaanController::class, 'create'])->name('pemeliharaan');
+Route::post('/pemeliharaan', [PemeliharaanController::class, 'create'])->middleware('auth')->name('pemeliharaan');
+
 Route::post('/selesaikan', [PemeliharaanController::class, 'selesaikan'])->name('selesaikan');
