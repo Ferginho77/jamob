@@ -137,7 +137,6 @@
                     <img id="bensin" src="" alt="Bensin" style="max-width: 100%; height: auto;">
                     <input type="hidden" id="url_bensin" name="bensin" value="">
                     <input type="hidden" id="deskripsi" name="deskripsi" value="">
-                    <button type="submit" name="submit" id="pemeliharaan" class="btn btn-danger mt-2">Buat Pemeliharaan</button>
                 </form>
             </div>
         </div>
@@ -187,25 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 });
-    document.getElementById("pemeliharaan").onclick = function(event) {
-        event.preventDefault();
 
-        var formData = new FormData(document.getElementById("form_pemeliharaan"));
-
-        fetch("{{ route('pemeliharaan') }}" ,{
-            method: 'POST',
-            body: formData
-        })
-        .then(data => {
-            Swal.fire({
-                title: "Data Berhasil Dikirim!",
-                icon: "success"
-            });
-            setTimeout(() => {
-                        window.location.reload();
-                    }, 1000);
-            });
-        };
 </script>
 
 @endsection
