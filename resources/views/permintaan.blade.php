@@ -5,11 +5,11 @@
 @section('content')
 
 <div class="container">
-    <a href="/dashboard" class="btn btn-danger mt-3">Kembali</a>
+    <a href="/dashboard" class="btn btn-danger mt-3"><i class="fa-solid fa-arrow-left"></i>  Kembali</a>
     <button type="button" class="btn btn-success mt-3"
         data-bs-toggle="modal"
         data-bs-target="#Permintaan"
-        >Buat Data Permintaan</button>
+        ><i class="fa-solid fa-plus"></i>  Buat Data Permintaan</button>
         <div class="modal fade" id="Permintaan" tabindex="-1" aria-labelledby="PermintaanLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -34,7 +34,9 @@
                                 <select class="form-control"  name="mobil_id">
                                     <option value="">-- Pilih Mobil --</option>
                                     @foreach ($mobils as $mobil)
-                                        <option value="{{ $mobil->id }}">{{ $mobil->nama_mobil }}</option>
+                                        @if ($mobil->status == 'Ada')
+                                            <option value="{{ $mobil->id }}">{{ $mobil->nama_mobil }}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -95,6 +97,7 @@
                                         <i class="fa-solid fa-check"></i>
                                     </button>
                                 </form>
+
                                 <!-- Tombol Xmark -->
                                 <form action="{{ route('permintaan.delete', $x->id) }}" method="POST" style="display:inline;">
                                     @csrf

@@ -19,15 +19,14 @@ class Mobil extends Model
         'updated_at', 
     ];
     
-    public function peminjamans()
+    public function peminjaman()
     {
-        return $this->hasMany(Peminjaman::class, 'mobil_id');
+        return $this->hasOne(Peminjaman::class);
     }
-
-    // Model Mobil
+  
     public function user()
     {
-        return $this->belongsTo(User::class, 'id'); 
+        return $this->belongsTo(User::class);
     }
 
     public function mobil()

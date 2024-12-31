@@ -31,7 +31,7 @@
                                         name="username"
                                         placeholder="Username"
                                     />
-                                    <label for="username">Username</label>
+                                    <label for="username">Username <i class="fa-solid fa-user"></i></label>
                                 </div>
                                 <div class="form-floating mb-3">
                                     <input
@@ -41,10 +41,10 @@
                                         name="password"
                                         placeholder="Password"
                                     />
-                                    <label for="password">Password</label>
+                                    <label for="password">Password <i class="fa-solid fa-lock"></i></label>
                                 </div>
                                 <div class="d-grid gap-2 mx-auto">
-                                    <button class="btn btn-primary btn-lg" type="submit">Login</button>
+                                    <button class="btn btn-primary btn-lg" type="submit">Login <i class="fa-solid fa-right-to-bracket"></i></button>
                                 </div>
                             </form>
 

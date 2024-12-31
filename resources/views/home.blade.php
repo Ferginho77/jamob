@@ -38,7 +38,7 @@
                                     data-nama="{{ $peminjaman->mobil->nama_mobil }}"
                                     data-plat="{{ $peminjaman->mobil->plat_nomor }}"
                                     >
-                                    Kembalikan
+                                    <i class="fa-solid fa-car"></i>  Kembalikan
                                 </button>
                             @endif
                         </div>
@@ -72,14 +72,20 @@
                             <label for="tanggal_pengembalian" class="form-label">Tanggal Pengembalian</label>
                             <input type="date" class="form-control" id="tanggal_pengembalian" name="tanggal_pengembalian" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="kondisiMobil" class="form-label">Kondisi Terakhir (Foto)</label>
-                            <input class="form-control" type="file" id="kondisi_fisik" name="kondisi_fisik" accept="image/*">
-                        </div>
-                        <div class="mb-3">
-                            <label for="kondisiBensin" class="form-label">Bensin (Foto)</label>
-                            <input class="form-control" type="file" id="bensin" name="bensin" accept="image/*">
-                        </div>
+                             <div class="mb-3">
+                                <label for="kondisiMobil" class="form-label"><i class="fa-solid fa-camera"></i>  Kondisi Terakhir (Foto)</label>
+                                <div class="custom-file-upload">
+                                    <input class="form-control" type="file" id="kondisi_fisik" name="kondisi_fisik" accept="image/*">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="kondisiBensin" class="form-label"><i class="fa-solid fa-gas-pump"></i> Bensin (Foto)</label>
+                                <div class="custom-file-upload">
+                                    <input class="form-control" type="file" id="bensin" name="bensin" accept="image/*">
+                                </div>
+                            </div>
+
                         <div class="mb-3">
                             <label for="deskripsiKondisi" class="form-label">Deskripsi Kondisi (optional)</label>
                             <textarea class="form-control" rows="3" id="deskripsiKondisi" name="deskripsiKondisi"></textarea>

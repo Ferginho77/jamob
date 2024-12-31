@@ -30,12 +30,14 @@ class HomeController extends Controller
         $totalMobil = DB::table('mobil')->where('status', 'Ada')->count();
         $totalPeminjam = DB::table('peminjaman')->count();
         $totalPemeliharaan = DB::table('pemeliharaan')->count();
+        $totalPermintaan = DB::table('permintaan')->count();
 
         return view('dashboard', compact('pengembalians'),
         [
             'totalMobil' => $totalMobil,
             'totalPeminjam' => $totalPeminjam,
-            'totalPemeliharaan' => $totalPemeliharaan
+            'totalPemeliharaan' => $totalPemeliharaan,
+            'totalPermintaan' => $totalPermintaan
         ]);
 
     }
@@ -59,7 +61,7 @@ class HomeController extends Controller
     public function permintaan()
     {
         $users = User::all();
-        $mobils = Mobil::all();
+        $mobils = Mobil::with('user')->get();
         $permintaans = Permintaan::with('user')->get();
         return view('permintaan', compact('users', 'mobils', 'permintaans'));
     }

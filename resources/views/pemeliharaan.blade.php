@@ -5,7 +5,7 @@
 @section('content')
 
     <div class="container">
-    <a href="/dashboard" class="btn btn-danger mt-3">Kembali</a>
+    <a href="/dashboard" class="btn btn-danger mt-3"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
 
         <h2 class="text-center">DATA PEMELIHARAAN MOBIL</h2>
         <div class="card">

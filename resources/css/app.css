@@ -9,3 +9,36 @@
     width: 100%;
     table-layout: fixed;
 }
+/* Menyembunyikan input file asli */
+.custom-file-upload input[type="file"] {
+    display: none;
+}
+
+/* Membuat tombol dengan ikon dan teks */
+.custom-file-upload label {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Menambahkan padding dan spacing antara ikon dan teks */
+.custom-file-upload label i {
+    margin-right: 10px;
+}
+
+/* Mengubah warna tombol saat hover */
+.custom-file-upload label:hover {
+    background-color: #0056b3;
+}
+
+/* Menambahkan border dan shadow jika diperlukan */
+.custom-file-upload label:active {
+    background-color: #003c8f;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+}

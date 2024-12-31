@@ -38,7 +38,7 @@
 
         <div class="col-xl-3 col-md-6">
             <div class="card bg-success text-white mb-4">
-                <div class="card-body">0 Permintaan</div>
+                <div class="card-body">Permintaan : {{ $totalPermintaan }}</div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <a class="small text-white stretched-link" href="/permintaan">View Details</a>
                     <div class="small text-white">
@@ -94,7 +94,7 @@
                                     <td>{{ $x->user->username }}</td>
                                     <td>{{ $x->deskripsi }}</td>
                                     <td>{{ $x->created_at }}</td>
-                                    <td><a href="https://www.google.com/maps?q={{ $x->location }}" target="_blank">Lihat Lokasi</a></td>
+                                    <td><a href="https://www.google.com/maps?q={{ $x->location }}" target="_blank">Lihat Lokasi <i class="fa-solid fa-location-dot"></i></a></td>
                                     <td>
                                         <button type="button" class="btn btn-primary"
                                             data-bs-toggle="modal"
@@ -107,6 +107,7 @@
                                             data-id="{{ $x->mobil_id }}"
                                             data-status="{{ $x->mobil->status }}">
                                             Cek Kondisi
+                                            <i class="fa-solid fa-folder-open"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -132,8 +133,6 @@
                     <input type="hidden" id="url_fisik" name="kondisi_fisik" value="">
 
                     <h4>Kondisi Bensin</h4>
-                    <h4>Deskripsi :</h4>
-                    <h6 id="deskripsi"></h6>
                     <img id="bensin" src="" alt="Bensin" style="max-width: 100%; height: auto;">
                     <input type="hidden" id="url_bensin" name="bensin" value="">
                     <input type="hidden" id="deskripsi" name="deskripsi" value="">

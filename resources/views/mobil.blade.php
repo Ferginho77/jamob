@@ -4,17 +4,17 @@
 
 @section('content')
 <div class="container">
-<a href="/dashboard" class="btn btn-danger mt-3">Kembali</a>
+<a href="/dashboard" class="btn btn-danger mt-3"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
 
     <button class="btn btn-primary mt-3 ms-auto"
     data-bs-toggle="modal"
     data-bs-target="#FormModal"
-    >Tambah Mobil</button>
+    ><i class="fa-solid fa-plus"></i> Tambah Mobil</button>
 
     <button class="btn btn-info mt-3"
      data-bs-toggle="modal"
     data-bs-target="#Pemeliharaan"
-    >Buat Pemeliharaan</button>
+    ><i class="fa-solid fa-plus"></i> Buat Pemeliharaan</button>
 
     <div class="pb-5 text-center bg-image img-fluid">
         <div class="text-black"><h1>MOBIL TERSEDIA</h1></div>
@@ -29,15 +29,22 @@
                         <p class="card-text">{{ $x->plat_nomor }}</p>
                         <p class="card-text">Warna: {{ $x->warna }}</p>
                         <p class="card-text">Status:
-                            <span class="{{ $x->status === 'Ada' ? 'text-success' : ($x->status === 'Rusak' ? 'text-danger' : 'text-secondary') }}">
-                                {{ $x->status }}
-                            </span>
-                        </p>
-                        <button class="btn {{ $x->status === 'Ada' ? 'btn-secondary' : ($x->status === 'Rusak' ? 'btn-danger' : 'btn-success') }} ubah-status"
-                            data-id="{{ $x->id }}"
-                            {{ $x->status === 'Rusak' ? 'disabled' : '' }}>
-                            {{ $x->status === 'Ada' ? 'Non Aktifkan Kendaraan' : ($x->status === 'Rusak' ? 'Mobil Sedang Di Perbaiki' : 'Aktifkan Kendaraan') }}
-                        </button>
+                        <span class="{{ $x->status === 'Ada' ? 'text-success' : ($x->status === 'Rusak' ? 'text-danger' : ($x->status === 'Dipinjam' ? 'text-primary' : 'text-secondary')) }}">
+                            {{ $x->status }}
+                        </span>
+                    </p>
+                    <button class="btn 
+                        {{ $x->status === 'Ada' ? 'btn-secondary' : 
+                            ($x->status === 'Rusak' ? 'btn-danger' : 
+                            ($x->status === 'Dipinjam' ? 'btn-primary' : 'btn-success')) }} ubah-status"
+                        data-id="{{ $x->id }}"
+                        {{ $x->status === 'Rusak' ? 'disabled' : '' }}
+                        {{ $x->status === 'Dipinjam' ? 'disabled' : '' }}>
+                        {{ $x->status === 'Ada' ? 'Non Aktifkan Kendaraan' : 
+                            ($x->status === 'Rusak' ? 'Mobil Sedang Di Perbaiki' : 
+                            ($x->status === 'Dipinjam' && $x->peminjaman ? 'Mobil Sedang Dipinjam Oleh : ' . $x->peminjaman->user->username : 'Aktifkan Kendaraan')) }}
+                    </button>
+
 
                     </div>
                 </div>
@@ -96,7 +103,9 @@
                         <select class="form-control"  name="mobil_id">
                             <option value="">-- Pilih Mobil --</option>
                             @foreach ($mobils as $mobil)
-                                <option value="{{ $mobil->id }}">{{ $mobil->nama_mobil }}</option>
+                                @if ($mobil->status == 'Ada')
+                                    <option value="{{ $mobil->id }}">{{ $mobil->nama_mobil }}</option>
+                                @endif
                             @endforeach
                         </select>
                     </div>
@@ -104,7 +113,7 @@
                         <label for="">Deskripsi Kerusakan</label>
                         <input type="text" name="deskripsi" class="form-control">
                     </div>
-                    <button type="submit" name="submit" class="btn btn-info">Kirim</button>
+                    <button type="submit" name="submit" class="btn btn-primary">Kirim</button>
                 </form>
 
             </div>
@@ -166,19 +175,21 @@ function handleStatusChange(mobilId, csrfToken, button) {
 function updateButtonStatus(button, newStatus) {
     button.classList.toggle('btn-secondary', newStatus === 'Ada');
     button.classList.toggle('btn-success', newStatus === 'NonAktif');
-    button.classList.toggle('btn-warning', newStatus === 'Rusak');
-    button.disabled = newStatus === 'Rusak';
+    button.classList.toggle('btn-danger', newStatus === 'Rusak');
+    button.classList.toggle('btn-primary', newStatus === 'Dipinjam');  
+    button.disabled = newStatus === 'Rusak' || newStatus === 'Dipinjam';  
 
     button.textContent = newStatus === 'Ada' ? 'Non Aktifkan Kendaraan' :
-                         newStatus === 'Rusak' ? 'Mobil Sedang Di Perbaiki' : 'Aktifkan Kendaraan';
+                         newStatus === 'Rusak' ? 'Mobil Sedang Di Perbaiki' : 
+                         newStatus === 'Dipinjam' ? 'Mobil Sedang Dipinjam' : 'Aktifkan Kendaraan';
 
     const statusSpan = button.closest('.card-body').querySelector('span');
     statusSpan.textContent = newStatus;
     statusSpan.classList.toggle('text-success', newStatus === 'Ada');
     statusSpan.classList.toggle('text-danger', newStatus === 'Rusak');
     statusSpan.classList.toggle('text-secondary', newStatus === 'NonAktif');
+    statusSpan.classList.toggle('text-primary', newStatus === 'Dipinjam'); 
 }
-
 
 function displaySuccessMessage(message) {
     Swal.fire({

@@ -121,7 +121,8 @@ class MobilController extends Controller
     }
 
     public function nonaktif(Request $request)
-    {
+{
+    try {
         $mobil = Mobil::findOrFail($request->mobil_id);
         $mobil->status = $mobil->status === 'Ada' ? 'NonAktif' : 'Ada';
         $mobil->save();
@@ -130,7 +131,14 @@ class MobilController extends Controller
             'success' => true,
             'new_status' => $mobil->status,
         ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
+        ], 500); // HTTP 500 Internal Server Error
     }
+}
+
 
 
 }
