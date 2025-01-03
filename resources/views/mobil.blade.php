@@ -16,7 +16,7 @@
     data-bs-target="#Pemeliharaan"
     ><i class="fa-solid fa-plus"></i> Buat Pemeliharaan</button>
 
-    <div class="pb-5 text-center bg-image img-fluid">
+    <div class="pb-5 text-center bg-image img-fluid mt-3">
         <div class="text-black"><h1>MOBIL TERSEDIA</h1></div>
     </div>
     <div class="row">

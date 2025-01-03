@@ -6,7 +6,7 @@
 
 <div class="container">
 <a href="/dashboard" class="btn btn-danger mt-3"><i class="fa-solid fa-arrow-left"></i>  Kembali</a>
-    <div class="pb-5 text-center bg-image img-fluid">
+    <div class="pb-5 text-center bg-image img-fluid mt-3">
         <div class="text-black"><h1>MOBIL DIPINJAM</h1></div>
     </div>
     <div class="row">
@@ -20,7 +20,7 @@
                         <p class="card-text">{{ $x->plat_nomor }}</p>
                         <p class="card-text">Warna: {{ $x->warna }}</p>
                         <p class="card-text">Status: 
-                            <span class="text-danger">{{ $x->status }} </span>
+                            <span class="text-danger">{{ $x->status }} Oleh : {{ $x->peminjaman->user->username }}</span>
                         </p>
                     </div>
                 </div>

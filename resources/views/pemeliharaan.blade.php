@@ -7,7 +7,7 @@
     <div class="container">
     <a href="/dashboard" class="btn btn-danger mt-3"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
 
-        <h2 class="text-center">DATA PEMELIHARAAN MOBIL</h2>
+        <h2 class="text-center my-3">DATA PEMELIHARAAN MOBIL</h2>
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -15,7 +15,7 @@
                     <thead>
                         <tr>
                             <td>Merk Mobil</td>
-                            <td>Deskripsi</td>
+                            <td style="width:50%">Deskripsi</td>
                             <td>Status</td>
                             <td>Selesaikan Pemeliharaan</td>
                         </tr>

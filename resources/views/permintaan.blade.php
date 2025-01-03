@@ -63,7 +63,7 @@
             </div>
         </div>
     <div class="pb-5 text-center bg-image img-fluid">
-        <div class="text-black">
+        <div class="text-black mt-3">
             <h1>DAFTAR PERMINTAAN PEMINJAMAN KENDARAAN</h1>
         </div>
     </div>
@@ -76,7 +76,7 @@
                         <td>Nama Peminjam</td>
                         <td>Nomor SPPD Peminjam</td>
                         <td>Tanggal Peminjaman</td>
-                        <td>Deskripsi Kegiatan</td>
+                        <td style="width:30%">Deskripsi Kegiatan</td>
                         <td>Tujuan</td>
                         <td>Terima/Tolak Permintaan</td>
                     </tr>
@@ -93,16 +93,16 @@
                                 <!-- Tombol Check -->
                                 <form action="{{ route('permintaan.approve', $x->id) }}" method="POST" style="display:inline;">
                                     @csrf
-                                    <button type="submit" class="btn btn-success">
+                                    <button type="submit" class="btn btn-success" onclick="return confirm('Apakah Data Sudah Sesuai?')">
                                         <i class="fa-solid fa-check"></i>
                                     </button>
                                 </form>
-
+                                <button class="btn" style="display:inline;" >/</button>
                                 <!-- Tombol Xmark -->
                                 <form action="{{ route('permintaan.delete', $x->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus data?')">
                                         <i class="fa-solid fa-xmark"></i>
                                     </button>
                                 </form>
