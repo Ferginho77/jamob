@@ -91,21 +91,23 @@
                             <td>{{ $x->tujuan }}</td>
                             <td>
                                 <!-- Tombol Check -->
-                                <form action="{{ route('permintaan.approve', $x->id) }}" method="POST" style="display:inline;">
+                                <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                <form action="{{ route('permintaan.approve', $x->id) }}" method="POST" style="display:inline; text-align:center; width: 100%;">
                                     @csrf
-                                    <button type="submit" class="btn btn-success" onclick="return confirm('Apakah Data Sudah Sesuai?')">
-                                        <i class="fa-solid fa-check"></i>
-                                    </button>
+                                        <button type="submit" class="btn btn-success" onclick="return confirm('Apakah Data Sudah Sesuai?')" style="margin: 0 auto;">
+                                            <i class="fa-solid fa-check"></i>
+                                        </button>
                                 </form>
-                                <button class="btn" style="display:inline;" >/</button>
+                                <b>/</b>
                                 <!-- Tombol Xmark -->
-                                <form action="{{ route('permintaan.delete', $x->id) }}" method="POST" style="display:inline;">
+                                <form action="{{ route('permintaan.delete', $x->id) }}" method="POST" style="display:inline; text-align:center; width: 100%;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus data?')">
                                         <i class="fa-solid fa-xmark"></i>
                                     </button>
                                 </form>
+                            </div>
                             </td>
                         </tr>
                     @endforeach

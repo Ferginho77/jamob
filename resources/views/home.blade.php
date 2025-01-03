@@ -11,43 +11,41 @@
         <div class="text-black"><h1>PENGEMBALIAN MOBIL</h1></div>
     </div>
 
-    <div class="card">
     @if ($peminjamans->isEmpty())
         <div class="card-header" role="alert">
             Tidak ada peminjaman yang sedang berlangsung.
         </div>
     @else
-        <div class="row position-relative">
-            @foreach ($peminjamans as $peminjaman)
-                <div class="col-md-6 p-4">
-                    <div class="mb-2 position-relative top-50 start-50 translate-middle">
-                        <div class="text-center"> 
-                            <img src="{{ asset('img/' . $peminjaman->mobil->gambar) }}" class="card-img-top img-fluid pt-3" alt="{{ $peminjaman->mobil->nama_mobil }}">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $peminjaman->mobil->nama_mobil }}</h5>
-                            <p class="card-text">Nama Peminjam : {{ $peminjaman->user->username }}</p>
-                            <p class="card-text">Tanggal Pinjam: {{ $peminjaman->tanggal_peminjaman }}</p>
-                            <p class="card-text">Tujuan: {{ $peminjaman->tujuan }}</p>
-
-                            @if (Auth::check() && Auth::user()->id === $peminjaman->user_id)
-                                <button type="button" class="btn btn-primary"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#mobilModal"
-                                    data-id="{{ $peminjaman->mobil_id }}"
-                                    data-nama="{{ $peminjaman->mobil->nama_mobil }}"
-                                    data-plat="{{ $peminjaman->mobil->plat_nomor }}"
-                                    >
-                                    <i class="fa-solid fa-car"></i>  Kembalikan
-                                </button>
-                            @endif
-                        </div>
-                    </div>
+    <div class="row justify-content-center position-relative">
+    @foreach ($peminjamans as $peminjaman)
+        <div class="d-flex justify-content-center">
+            <div class="card mb-2" style="width: 100%; max-width: 500px;">
+                <div class="text-center"> 
+                    <img src="{{ asset('img/' . $peminjaman->mobil->gambar) }}" class="card-img-top img-fluid pt-3" alt="{{ $peminjaman->mobil->nama_mobil }}">
                 </div>
-            @endforeach
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ $peminjaman->mobil->nama_mobil }}</h5>
+                    <p class="card-text">Nama Peminjam : {{ $peminjaman->user->username }}</p>
+                    <p class="card-text">Tanggal Pinjam: {{ $peminjaman->tanggal_peminjaman }}</p>
+                    <p class="card-text">Tujuan: {{ $peminjaman->tujuan }}</p>
+
+                    @if (Auth::check() && Auth::user()->id === $peminjaman->user_id)
+                        <button type="button" class="btn btn-primary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#mobilModal"
+                            data-id="{{ $peminjaman->mobil_id }}"
+                            data-nama="{{ $peminjaman->mobil->nama_mobil }}"
+                            data-plat="{{ $peminjaman->mobil->plat_nomor }}">
+                            <i class="fa-solid fa-car"></i> Kembalikan
+                        </button>
+                    @endif
+                </div>
+            </div>
         </div>
-    @endif
+    @endforeach
 </div>
+
+    @endif
     <!-- Modal -->
     <div class="modal fade" id="mobilModal" tabindex="-1" aria-labelledby="mobilModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -89,7 +87,7 @@
                         <div class="mb-3">
                             <label for="deskripsiKondisi" class="form-label">Deskripsi Kondisi (optional)</label>
                             <textarea class="form-control" rows="3" id="deskripsiKondisi" name="deskripsiKondisi"></textarea>
-                            <input type="text" id="location" name="location">
+                            <input type="hidden" id="location" name="location" readonly>
                             <input type="hidden" name="user_id" value="{{ Auth::id() }}">
                             <input type="hidden" id="mobil_id" name="mobil_id" value="">
                         </div>

@@ -15,9 +15,9 @@
                     <thead>
                         <tr>
                             <td>Merk Mobil</td>
-                            <td style="width:50%">Deskripsi</td>
+                            <td style="width:60%;">Deskripsi</td>
                             <td>Status</td>
-                            <td>Selesaikan Pemeliharaan</td>
+                            <td style="text-align: center;">Selesaikan Pemeliharaan</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -27,7 +27,9 @@
                                 <td>{{ $x->mobil->nama_mobil }}</td>
                                 <td>{{ $x->deskripsi }}</td>
                                 <td class="status">{{ $x->mobil->status }}</td>
-                                <td> <button class="btn btn-success btn-ubah-status" data-id="{{ $x->mobil->id }}" type="button">Selesaikan</button></td>
+                                <td style="text-align: center;"> 
+                                    <button class="btn btn-success btn-ubah-status" data-id="{{ $x->mobil->id }}" type="button">Selesaikan</button>
+                                </td>
                             </tr>
                         @endif
                         @endforeach
