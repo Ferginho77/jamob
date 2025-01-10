@@ -12,9 +12,11 @@
     </div>
 
     @if ($peminjamans->isEmpty())
+    <div class="card">
         <div class="card-header" role="alert">
             Tidak ada peminjaman yang sedang berlangsung.
         </div>
+    </div>
     @else
     <div class="row justify-content-center position-relative">
     @foreach ($peminjamans as $peminjaman)
